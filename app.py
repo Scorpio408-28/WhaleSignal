@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, render_template, session
+from flask import Flask, request, jsonify, render_template, session, redirect, url_for
 import os
 from werkzeug.utils import secure_filename
 from joblib import load
@@ -854,11 +854,12 @@ def log_in():
 def pay():
     username = session.get('username')  # 取得 Session 中的 username
     return render_template('pay.html', username=username)
+@app.route('/go_to_pay')
+def go_to_pay():
+    return redirect(url_for('pay', _external=True))
 @app.route("/success", methods=["GET", "POST"])
 def success():
     return render_template("success.html")
-
-
 @app.route("/login", methods=["GET", "POST"])
 def login():
     try:
