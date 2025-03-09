@@ -1,0 +1,546 @@
+html{
+    font-family: "Rajdhani","Michroma", serif;
+}
+body {
+    font-family: "Rajdhani","Michroma", serif;
+    background-color: #222831;
+    color: #ffea4a;
+    color: #EEEEEE;
+  }
+p {
+    word-break: keep-all;      /* 讓中文不亂斷 */
+    overflow-wrap: break-word; /* 讓英文長詞可以換行 */
+    hyphens: auto;             /* 英文換行時加 `-` */
+  }
+  /* 圖表容器樣式 */
+
+.chart{
+    border: 1px solid #ddd;
+    padding: 30px;
+    box-sizing: border-box;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+.h50p{
+    height: 50%;
+    width: 100%;
+}
+.analysis-container{
+    
+}
+
+.Comment{
+    margin: 1rem;
+    text-align: center;
+    padding: 10px;
+    font-size: 1.2rem;
+}
+
+
+
+.label {
+    min-width: 100px; /* 設置最小寬度來讓冒號對齊 */
+
+}
+
+.value {
+    white-space: nowrap; /* 防止文字換行 */
+}
+.switch-btn {
+    border-radius: 50%;
+    background-color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50px;  /* 你可以根據需要調整按鈕的大小 */
+    height: 50px ; /* 與寬度一致，保持圓形 */
+    cursor: pointer;
+    padding: auto;
+}
+
+.switch-btn img {
+    width: 85%;
+    height: 85%;
+    object-fit: contain; 
+    border-radius: 50%;
+    background: white;
+}
+.yt-btn{
+    background-color: rgba(188, 1, 1, 0.592);
+}
+.sptf-btn{
+    background-color: rgba(1, 188, 17, 0.592);
+}
+.am-btn{
+    background-color: rgba(143, 62, 69, 0.592);
+}
+.tidal-btn{
+    background-color: rgba(146, 146, 146, 0.592);
+}
+.amazon-btn{
+    background-color: rgba(36, 0, 146, 0.592);
+}
+.btn-block{
+    height: 50px;
+}
+.yt-btn-block{
+    margin: 0 10px;
+    border-radius: 25px;
+}
+.btn-text{
+    width: 125px;
+    text-align: center;
+}
+.btn-text {
+    display: inline-block;
+    opacity: 0;
+    width: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    transition: width 0.3s ease-out, opacity 0.3s ease-out;
+}
+
+.yt-btn-block.active .btn-text {
+    width: 125px; /* 讓它根據內容展開 */
+    opacity: 1;
+    
+}
+
+.yt-btn-block {
+    display: flex;
+    align-items: center;
+    height: 50px;
+}
+
+
+
+.analysis-content {
+    position: absolute;
+    
+    top: 0;
+    left: 20vw;
+    right: 0;
+    width: 60vw;
+    opacity: 0; 
+    transform: translateY(-20px);
+    transition: opacity 0.3s ease-out, transform 0.3s ease-out; 
+    visibility: hidden; 
+    
+}
+
+.analysis-content.active {
+    visibility: visible; 
+    display: inline-block;
+    opacity: 1; 
+    transform: translateY(0);
+    
+}
+
+
+.analysis-btn-container {
+    margin: 1rem;
+    position: relative;
+    width: 100vw;
+    padding: 0;
+}
+.main-content{
+    
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;  /* 保證內容從上到下排列 */
+    flex-grow: 1;  /* 讓主內容區域佔據剩餘空間 */
+}
+canvas{
+    height: 28vw;
+    width: 28vw;
+}
+.chart{
+    width: 28vw;
+    height: 28vw;
+    background: rgba(255, 255, 255, 0.2); /* 半透明白色 */
+    backdrop-filter: blur(10px); /* 模糊效果 */
+    -webkit-backdrop-filter: blur(10px); /* 兼容 Safari */
+    border-radius: 10px; /* 圓角讓毛玻璃更自然 */
+    padding: 10px;
+    margin: 1vw;
+    transition: transform 0.3s ease-in-out, background 0.3s ease-in-out;
+
+}
+.chart:hover{
+    transform: scale(1.08); /* 放大 1.2 倍 */
+    background: rgba(255, 255, 255, 0.25); /* 放大時稍微變亮 */
+    border-color: white;
+}
+.text-chart{
+    width: 58vw;
+    border: 1px solid #ddd;
+    background: rgba(255, 255, 255, 0.2); /* 半透明白色 */
+    backdrop-filter: blur(10px); /* 模糊效果 */
+    -webkit-backdrop-filter: blur(10px); /* 兼容 Safari */
+    border-radius: 10px; /* 圓角讓毛玻璃更自然 */
+    padding: 10px;
+    transition: transform 0.3s ease-in-out, background 0.3s ease-in-out;
+
+}
+.text-chart:hover{
+    transform: scale(1.08); /* 放大 1.2 倍 */
+    background: rgba(255, 255, 255, 0.25);
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    
+}
+
+
+.chart:hover {
+    transform: scale(1.08);
+    background: rgba(255, 255, 255, 0.25);
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+
+
+/* Text chart specific styles */
+.text-chart {
+
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 10px;
+    padding: 20px;
+    margin: 15px;
+    transition: all 0.3s ease-in-out;
+}
+
+
+
+/* Info container specific styles */
+.info-container {
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 10px;
+    transition: all 0.3s ease-in-out;
+    display: flex;
+    flex-direction: column;  /* 使 p 元素堆疊排列 */
+    flex-wrap: wrap;             /* 當空間不足時換行 */
+    justify-content: space-between; 
+    text-align: center;
+    align-items: center;
+    font-size: 1.5rem;
+    padding: 25px;
+}
+
+.info-container:hover {
+    transform: scale(1.08);
+    background: rgba(255, 255, 255, 0.25);
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+}  
+
+
+
+.large-number {
+    display: flex;
+    align-items: flex-start; /* 讓數字和文字對齊頂端 */
+    justify-content: center; /* 使 "88" 和 "days" 緊湊在一起 */
+    width: 100%;
+    
+    font-size: 4vw;            /* 根據視窗大小調整字體大小 */
+    font-weight: bold;          /* 讓數字顯眼 */
+    margin: 0;                  /* 去除 p 元素的外邊距 */
+}
+.day-number{
+    font-size: 8vw;
+    
+}
+.description{
+    font-size: 2vw;
+    margin-bottom: 1rem;
+}
+.song-time-container {
+    display: flex;
+    width: 100%; /* 使用100%的寬度 */
+    justify-content: space-between; /* 讓左右元素分開，並對齊左右 */
+     /* 調整上下間距 */
+    height: 50%;
+    width: 100%;
+    font-size: 2vw;
+    position: relative;
+}
+
+.song-title {
+    position: absolute;
+    text-align: left;
+    left: 0;
+    bottom: 0;
+    margin: 0;
+    min-width: 10vw;
+    
+}
+
+.upload-time {
+    text-align: left; /* Upload Time 靠右顯示 */
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    margin: 0;
+    min-width: 10vw;
+}
+.song-time-container {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    
+}
+
+.song-title, .upload-time {
+    
+}   
+
+.song-name, .upload-time-value {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    text-align: right; /* 右側文字對齊右側 */
+}
+.song-name {    
+    max-height: 100%;
+    overflow: hidden;            /* 隱藏超出容器的文字 */
+    text-overflow: ellipsis;     /* 用省略號表示被截斷的文字 */
+    width: 100%;                 /* 可以根據需要設置具體寬度 */
+    display: block;              /* 確保元素能夠在單行顯示 */
+    max-width: 15vw;
+}
+.test{
+    width: 30vw;
+    height: 100px;
+    background-color: tan;
+}
+.test2{
+    width: 60vw;
+    height: 100px;
+}
+/* 按鈕樣式 */
+.history-btn {
+    height: 50px;
+    width: 50px;
+    position: fixed;
+    left: 20px;
+    top: 120px;
+    transform: translateY(-50%);
+    background-color: rgba(255, 255, 255, 0);
+    text-align: left;
+    color: white;
+    border: none;
+    padding: 5px;
+    border-radius: 5px;
+    cursor: pointer;
+    z-index: 1000;
+    
+}
+
+.history-item {
+    text-align: left;
+    display: block;
+    width: 100%;
+    /* padding: 8px 10px;s */
+    border: none;
+    background: transparent;
+    color: white;
+    font-size: 1rem;
+    white-space: nowrap; /* 避免文字換行 */
+    overflow: hidden; /* 防止超出範圍 */
+    text-overflow: ellipsis; /* 超出範圍時顯示省略號 */
+}
+
+
+.history-btn img{
+    height: 40px;
+    width: 40px;
+}
+
+.history-btn img:hover{
+    transform: scale(1.1);
+    filter:drop-shadow(0px 0px 5px rgba(255, 255, 255, 0.654));
+    
+}
+ 
+/* 歷史列表容器 */
+.history-panel {
+    position: fixed;
+    top: 0;
+    left: -35vw; 
+    width: 35vw;
+    text-align: left;
+    height: 100vh;
+    color: white;
+    padding: 20px;
+    padding-top: 165px;
+    padding-left: 30px;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s ease-in-out;
+    overflow-y: auto;
+    z-index: 2;
+    background: #393e465f; /* 半透明白色 */
+    background: #2228315f;
+    backdrop-filter: blur(10px); /* 模糊效果 */
+    -webkit-backdrop-filter: blur(10px); /* 兼容 Safari */
+    /* 文字遮罩，前 125px 會逐漸透明 */
+    mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0px, rgba(0, 0, 0, 1) 200px);
+    -webkit-mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0px, rgba(0, 0, 0, 1) 200px);
+}
+
+/* 顯示時的狀態 */
+.history-panel.active {
+    transform: translateX(35vw);
+}
+
+/* 清單樣式 */
+.history-panel ul {
+    list-style: none;
+    padding-left: 0; /* 移除預設左邊距 */
+    margin-left: 0; /* 讓內容完全靠左 */
+}
+
+.history-panel li {
+    padding: 10px;
+    border-bottom: 1px solid #eeeeee75;
+    overflow: hidden;            /* 隱藏超出容器的文字 */
+    text-overflow: ellipsis;     /* 用省略號表示被截斷的文字 */
+    height: 34px;
+                     /* 可以根據需要設置具體寬度 */
+    display: block;              /* 確保元素能夠在單行顯示 */
+}
+
+
+::-webkit-scrollbar {
+    width: 8px; /* 設定滾動條寬度 */
+}
+
+/* 滾動條軌道 */
+::-webkit-scrollbar-track {
+    background: #222831; /* 滾動條背景 */
+    border-radius: 4px;
+}
+
+/* 滾動條滑塊 */
+::-webkit-scrollbar-thumb {
+    background: #EEEEEE;
+    border-radius: 4px;
+}
+
+/* 滑鼠懸停在滾動條上時 */
+::-webkit-scrollbar-thumb:hover {
+    background: #cdcdcd;
+}
+
+.non-member {
+    filter: blur(10px); /* 增大模糊效果 */
+    pointer-events: none; /* 防止點擊交互，讓用戶無法操作 */
+    opacity: 0.4; /* 進一步降低透明度，使其更加模糊 */
+    background-color: rgba(255, 255, 255, 0.5); /* 加上半透明白色背景強化效果 */
+  }
+
+/* 手機 (小於 600px) */
+@media screen and (min-width: 100px) and (max-width: 768px) {
+    .analysis-content {
+      top: 0;
+      left: 10vw;
+      right: 0;
+      width: 80vw;
+    }
+    .chart {
+    width: 80vw ;
+    height: 80vw ;
+}
+    .text-chart {
+      width: 80vw;
+      margin: 1vh 0;
+    }
+    .large-number {
+        font-size: 11.4vw;        
+    }
+    .day-number{
+        font-size: 22.8vw;
+    }
+    .song-time-container{
+        font-size: 5.7vw;
+    }
+    .description{
+        font-size: 5.7vw;
+    }
+    .info-container{
+        font-size: 1.2rem;
+        
+    }
+    .yt-btn-block {
+        margin: 0 3px;
+    }
+    .history-panel {
+        position: fixed;
+        top: 0;
+        left: -60vw;
+        width: 60vw;
+    }
+    .history-panel.active {
+        transform: translateX(60vw);
+    }
+    .switch-btn {
+        width: 35px;
+        height: 35px;
+    }
+    .yt-btn-block {
+        height: 35px;
+    }
+    .song-name {        
+        max-width: 40vw;
+    }
+  }
+  
+  @media screen and (min-width: 768px) and (max-width: 1366px) {
+    .analysis-content {
+      top: 0;
+      left: 10vw;
+      right: 0;
+      width: 80vw;
+    }
+    .chart {
+      width: 38vw;
+      height: 38vw;
+      margin:  1vw;
+    }
+    .text-chart {
+      width: 78vw;
+      margin: 1vw 0;
+    }
+    .large-number {
+        font-size: 5.4vw;        
+    }
+    .day-number{
+        font-size: 10.5vw;
+    }
+    .description{
+        font-size: 2.7vw;
+    }
+    .song-time-container{
+        font-size: 2.7vw;
+    }
+    .history-panel {
+        position: fixed;
+        top: 0;
+        left: -60vw;
+        width: 60vw;
+    }
+    .history-panel.active {
+        transform: translateX(60vw);
+    }
+    .song-name {        
+        max-width: 20vw;
+    }
+  }

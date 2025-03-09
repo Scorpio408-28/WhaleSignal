@@ -1,0 +1,589 @@
+.upload{
+    width: 100%;
+    height: 100vh;
+}
+.banner-block{
+    width: 100wh;
+    height: 100vh;
+}
+.banner{
+    width: 100wh;
+    height: 100vh;
+}
+.upload-container {
+    display: flex;
+    width: 60vw;
+    height: 400px;
+    background: linear-gradient(-45deg, #ff3cac, #562b7c, #2b86c5, #1bff99);
+    background-size: 400% 400%;
+    animation: gradientMove 10s ease infinite;
+    border-radius: 10px;
+    overflow: hidden;
+}
+@keyframes gradientMove {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+.drop-area {
+    flex: 1;
+    background: rgba(0, 0, 0, 0.3);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    border-right: 1px solid #444;
+    padding: 20px;
+    color: white;
+    font-weight: 700;
+}
+.drop-area p {
+    border: 2px dashed white;
+    padding: 20px;
+    border-radius: 10px;
+}
+#file-name.active {
+    border: 2px solid white;
+}
+.upload-options {
+    flex: 1;
+    padding: 20px;
+    text-align: center;
+    background: rgba(0, 0, 0, 0.3);
+    color: white;
+    font-weight: 700;
+}
+.upload-options button, .upload-options input {
+    width: 80%;
+    padding: 10px;
+    margin: 10px 0;
+    background: #444;
+    border: none;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.upload-options button:hover {
+    background: #666;
+}
+.upload-btn{
+    font-size: 1rem;
+    width: 40vw;
+    padding: 10px;
+    margin: 10px 0;
+    background: #4444446f;
+    backdrop-filter: blur(10px);
+    border: none;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 50px;
+    animation-duration: 0.5s;
+    transition: transform 0.3s ease-in-out, background 0.3s ease-in-out;
+    /* border: 2px solid white; */
+    box-shadow: 
+    inset 0px 0px 10px #00f2ff69,   /* 內陰影 */
+    0px 0px 5px #ffffff90; 
+}
+.upload-btn:hover{
+    transform: scale(1.05);
+}
+
+.upload-btn:active {
+    background: #333;
+    animation: animate__fadeOutDown; 
+}
+.upload-btn:hover {
+    background: #555;
+}
+.sc-btn{
+    margin-top: 10px;
+    font-size: 1rem;
+    
+    border: none;
+    background: linear-gradient(to bottom, #1e5799 0%, #2989d8 50%, #207cca 51%, #7db9e8 100%);
+    background: linear-gradient(-45deg, #ff3cac, #562b7c, #2b86c5, #1bff99);
+    background-size: 400% 400%;
+    animation: gradientMove 10s ease infinite;
+    -webkit-background-clip: text; /* 讓背景只填充到文字 */
+    -webkit-text-fill-color: transparent; /* 讓文字本身透明，顯示背景 */
+    /* text-shadow: 1px 1px 1px rgba(255, 255, 255, 0.549); */
+}
+@keyframes gradientMove {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+.prettier-input {
+    cursor: pointer;
+    width: 90%;
+}
+.arrow-down {
+    position: relative;
+    display: flex; /* 讓內部線條可以用 flex 排列 */
+    justify-content: center; /* 讓箭頭居中 */
+    align-items: center;
+    width: 100px; /* 整體寬度 */
+    height: 60px; /* 整體高度 */
+}
+.arrow-down::before{
+    content: "";
+    position: absolute;
+    width: 50px; /* 線條長度 */
+    height: 6px; /* 線條粗細 */
+    background-color: white; /* 箭頭顏色 */
+    border-radius: 10px; /* 讓線條圓潤 */
+    top: 50%; /* 確保線條垂直居中 */
+    right: 42%; 
+    transform-origin: center;
+}
+.arrow-down::after {
+    content: "";
+    position: absolute;
+    width: 50px; /* 線條長度 */
+    height: 6px; /* 線條粗細 */
+    background-color: rgb(255, 255, 255); /* 箭頭顏色 */
+    border-radius: 10px; /* 讓線條圓潤 */
+    top: 50%; /* 確保線條垂直居中 */
+    left: 42%; 
+    transform-origin: center;
+}
+.arrow-down::before {
+    box-shadow: 0 0px 10px 5px rgba(255, 255, 255, 0.15);
+    transform: translate(-0%, -50%) rotate(45deg);
+}
+.arrow-down::after {
+    box-shadow: 0 0px 10px 5px rgba(255, 255, 255, 0.15);
+    transform: translate(-0%, -50%) rotate(-45deg);
+}
+.banner {
+    position: relative;
+    height: 100vh;
+    background-color: #222831;
+}
+.banner-block {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+.arrow-down-block {
+    position: absolute;
+    top: 50%;  /* 初始位置 */
+    left: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 0.6; /* 初始不透明 */
+    transition: top 0.5s ease-in-out, opacity 0.5s ease-in-out; /* 分開兩個過渡效果 */
+    z-index: 1000;
+    cursor: pointer;
+}
+.arrow-down-block{
+    top: 90%;  /* 滾動後移動到下方位置 */
+}
+.arrow-down-block.fade {
+    opacity: 0.1;  /* 滾動後透明度變化 */
+}
+.arrow-down-block:hover {
+    opacity: 1;  /* 當懸停時透明度降低 */
+
+}
+.text-shadow2{
+    text-shadow: 0 0px 5px rgb(255, 255, 255);
+}
+@media screen and (min-width: 100px) and (max-width: 600px) {
+    .upload-container {
+        width: 80vw;
+        height: 400px;
+        flex-direction: column;
+    }
+    .drop-area {
+        border-right: 0;
+        border-bottom: 1px solid #444;
+    }
+    .upload-btn {
+        width: 70vw;
+    }
+}
+@media screen and (min-width: 600px) and (max-width: 1024px) {
+    .upload-container {
+        height: 400px;
+        flex-direction: column;
+    }
+    .drop-area {
+        border-right: 0;
+        border-bottom: 1px solid #444;
+    }
+    .upload-btn {
+        width: 50vw;
+    }
+}
+/* load */
+:root {
+    --n: 200;
+    --ti: 4s;
+    --wi: 100vw;
+    --img-height: 100vh;
+    --primary-color: #0099cc;
+    --accent-color: #ff3366;
+    --bg-color: #000;
+    --font-large: 7rem;
+    --font-medium: 2.5rem;
+    --progress-bg: #1bff99;
+    --text-shadow: 0px 0px 30px rgba(0, 170, 255, 0.8);
+}
+.waveWrapper {
+    overflow: hidden;
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: 0;
+    margin: auto;
+}
+.waveWrapperInner {
+    position: absolute;
+    width: 100%;
+    overflow: hidden;
+    height: 100%;
+    bottom: -1px;
+    /* background-image: linear-gradient(to top, #8AE061 20%, #3BD8BB 80%); */
+   
+}
+
+.bgTop {
+    z-index: 15;
+    opacity: 0.5;
+}
+.bgMiddle {
+    z-index: 10;
+    opacity: 0.75;
+}
+.bgBottom {
+    z-index: 5;
+}
+.wave {
+    position: absolute;
+    left: 0;
+    width: 200%;
+    height: 100%;
+    background-repeat: repeat no-repeat;
+    background-position: 0 bottom;
+    transform-origin: center bottom;
+}
+.waveTop {
+    background-size: 50% 100px;
+}
+.waveAnimation .waveTop {
+    animation: move_wave 3s infinite;
+    -webkit-animation: move-wave 3s infinite;
+    -webkit-animation-delay: 1s;
+    animation-delay: 1s;
+}
+
+.waveMiddle {
+    background-size: 50% 120px;
+}
+.waveAnimation .waveMiddle {
+    animation: move_wave 10s linear infinite;
+}
+.waveBottom {
+    background-size: 50% 100px;
+}
+.waveAnimation .waveBottom {
+    animation: move_wave 15s linear infinite;
+}
+@keyframes move_wave {
+    0% {
+        transform: translateX(0) translateZ(0) scaleY(1)
+    }
+    50% {
+        transform: translateX(-25%) translateZ(0) scaleY(0.55)
+    }
+    100% {
+        transform: translateX(-50%) translateZ(0) scaleY(1)
+    }
+}
+.bgw {
+    width: var(--wi);
+    height: var(--img-height);
+    margin: 0;
+    position: relative;
+    overflow: hidden;
+    background-image: linear-gradient(
+        to bottom, 
+        rgba(254, 254, 254, 1) 0%, 
+        rgba(0, 164, 228, 0.75) 20%, 
+        rgba(40, 118, 249, 0.8) 40%, 
+        rgba(109, 23, 203, 0.85) 60%, 
+        rgba(4, 97, 159, 0.85) 80%, 
+        rgba(0, 0, 0, 0.9) 100%
+    );
+    background-color: linear-gradient(
+        to bottom, 
+        rgba(254, 254, 254, 1) 0%, 
+        rgba(0, 164, 228, 0.75) 20%, 
+        rgba(40, 118, 249, 0.8) 40%, 
+        rgba(109, 23, 203, 0.85) 60%, 
+        rgba(4, 97, 159, 0.85) 80%, 
+        rgba(0, 0, 0, 0.9) 100%
+    );
+    z-index: 999;
+    animation: riseUp2 10s ease-in-out, waveAnimation 60s infinite linear;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px); 
+    
+}
+
+@keyframes riseUp2 {
+    0% {
+        transform: translateY(115%);
+    }
+    100% {
+        transform: translateY(0%); /* 到達最上端 */
+    }
+}
+.bgw .water {
+    position: absolute;
+    background-image: linear-gradient(
+        to bottom, 
+        rgba(254, 254, 254, 1) 0%, 
+        rgba(0, 164, 228, 0.75) 20%, 
+        rgba(40, 118, 249, 0.8) 40%, 
+        rgba(109, 23, 203, 0.85) 60%, 
+        rgba(4, 97, 159, 0.85) 80%, 
+        rgba(0, 0, 0, 0.9) 100%
+    );background-size: cover;
+    height: 100%;
+    width: 100%;
+    filter: url("#turbulence");
+}
+
+@keyframes bgw {
+    0% {
+        filter: url(#turbulence);
+    }
+    50% {
+        filter: url(#turbulence);
+    }
+    100% {
+        filter: url(#turbulence);
+    }
+}
+.waveWrapper {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+.waveWrapperInner {
+    position: absolute;
+    width: 100%;
+    height: 100%; 
+    bottom: -20%;
+    animation: riseUp 10s ease-in-out ;
+}
+@keyframes riseUp {
+    0% {
+        transform: translateY(-5%);
+    }
+    100% {
+        transform: translateY(-120%); /* 到達最上端 */
+    }
+}
+.wave {
+    position: absolute;
+    left: 0;
+    width: 200%;
+    height: 100%;
+    background-repeat: repeat no-repeat;
+    background-position: 0 bottom;
+    transform-origin: center bottom;
+}
+.music {
+    height: 200px;
+    width: 300px;
+    display: inline-flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+.music .bar {
+    width: 12px;
+    height: 2px;
+    background: #fff;
+    animation: load 1.5s ease-in-out infinite;
+    border-radius: 12px;
+}
+  
+@keyframes load {
+    0%,
+    100% {
+        height: 2px;
+    }
+    50% {
+        height: 80px;
+    }
+}
+  
+.music .bar:nth-child(1) {
+    background: linear-gradient(to right, #F0E130, #ACFF00);
+    animation-delay: 1s;
+    box-shadow: 0 0 4px #FFD300;
+}
+  
+.music .bar:nth-child(2) {
+    background: linear-gradient(to right, #ACFF00, #FF5300);
+    animation-delay: 0.8s;
+    box-shadow: 0 0 4px #FFD300;
+}
+  
+.music .bar:nth-child(3) {
+    background: linear-gradient(to right, #FF5300, #FFE04D);
+    animation-delay: 0.6s;
+    box-shadow: 0 0 4px #FFD300;
+}
+  
+.music .bar:nth-child(4) {
+    background: linear-gradient(to right, #FFE04D, #FFD300);
+    animation-delay: 0.4s;
+    box-shadow: 0 0 4px #FFD300;
+}
+  
+.music .bar:nth-child(5) {
+    background: linear-gradient(to right, #FFD300, #FFD71A);
+    animation-delay: 0.2s;
+    box-shadow: 0 0 4px #FFD300;
+}
+  
+.music .bar:nth-child(6) {
+    background: linear-gradient(to right, #FFD71A, #FFD300);
+    animation-delay: 0.2s;
+    box-shadow: 0 0 4px #FFD300;
+}
+  
+.music .bar:nth-child(7) {
+    background: linear-gradient(to right, #FFD300, #FFE04D);
+    animation-delay: 0.4s;
+    box-shadow: 0 0 4px #FFD300;
+}
+  
+.music .bar:nth-child(8) {
+    background: linear-gradient(to right, #FFE04D, #FF5300);
+    animation-delay: 0.6s;
+    box-shadow: 0 0 4px #FFD300;
+}
+  
+.music .bar:nth-child(9) {
+    background: linear-gradient(to right, #FF5300, #ACFF00);
+    animation-delay: 0.8s;
+    box-shadow: 0 0 4px #FFD300;
+}
+  
+.music .bar:nth-child(10) {
+    background: linear-gradient(to right, #ACFF00, #F0E130);
+    animation-delay: 1s;
+    box-shadow: 0 0 4px #FFD300;
+}
+  
+.music{
+    z-index: 999999999999;
+}
+.loadcontainer{
+    padding: auto;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+}
+.music-block {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 99999999999999999;
+}
+.loadtext{
+    font-size: 30px;
+    color: #000000;
+    text-shadow: 0 0 5px white;
+    z-index: 9999999999999999999999;
+  }
+.loadcontainer{
+    display: none;
+}
+.loadcontainer.active{
+    display: flex;
+    position: fixed;
+    top: 0;
+    animation: fadeIn 3s cubic-bezier(0.25, 0.1, 0.25, 1) forwards; /* 1 秒內淡入 */
+    
+    
+}
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+         /* 可選：讓元素從下方微微上移 */
+    }
+    to {
+        opacity: 1;
+        
+    }
+}
+.loading04 {
+    display: flex;
+    gap: 15px;
+}
+
+.loading04 span {
+    font-size: 30px;
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    animation: loading04 .7s infinite;
+    text-shadow: 0 0 1px #FFD300;
+}
+
+.loading04 span:nth-child(2) {
+    animation-delay: 0.1s;
+}
+.loading04 span:nth-child(3) {
+    animation-delay: 0.2s;
+}
+.loading04 span:nth-child(4) {
+    animation-delay: 0.3s;
+}
+.loading04 span:nth-child(5) {
+    animation-delay: 0.4s;
+}
+.loading04 span:nth-child(6) {
+    animation-delay: 0.5s;
+}
+.loading04 span:nth-child(7) {
+    animation-delay: 0.6s;
+}
+.loading04 span:nth-child(8) {
+    animation-delay: 0.6s;
+}
+.loading04 span:nth-child(9) {
+    animation-delay: 0.6s;
+}
+.loading04 span:nth-child(10) {
+    animation-delay: 0.6s;
+}
+@keyframes loading04 {
+    0%, 100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(3px);
+    }
+}

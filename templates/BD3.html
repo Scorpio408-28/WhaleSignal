@@ -1,0 +1,1044 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>WhaleSignal Music Platform Analytics</title>
+  <!-- 載入 Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- 引用 CSS (放在 static 目錄) -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/BD.css') }}">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Michroma&family=Rajdhani:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/analysis.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+  <link rel="icon" type="image/png"
+    href="{{ url_for('static', filename='image/WhaleSignal_Logo-r(1).png') }}">
+  <style>
+    /* 統一容器大小 */
+    .chart-container {
+      display: inline-block;
+      vertical-align: top;
+      box-sizing: border-box;
+    }
+
+    /*     
+    .header {
+      text-align: center;
+      font-size: 1.5em;
+      margin-bottom: 20px;
+    }
+    .full-width {
+      width: 90%;
+      margin: 2% auto;
+    }
+    #scenarioText, .Comment {
+      font-size: 1.2em;
+      text-align: center;
+      padding: 10px;
+    } */
+  </style>
+</head>
+
+<body class="bc54">
+  <div id="header-info" class="header-info d-flex align-items-center">
+    <a href="http://127.0.0.1:5000/analysis" id="analysis" class="shape-ex2 m-3 Rajdhani text-shadow">analysis
+      <div class="shape-line"></div>
+    </a>
+    <a href="http://127.0.0.1:5000/pay" id="premium" class="shape-ex2 m-3 Rajdhani text-shadow">premium
+      <div class="shape-line"></div>
+    </a>
+    <a href="http://127.0.0.1:5000/log_in" id="user" class="user d-flex align-items-center text-shadow">
+      <div  class="user-account shape-ex2 m-3 Rajdhani">
+        login
+        <div class="shape-line"></div>
+      </div>
+      <img id="user-img" src="https://cdn-icons-png.flaticon.com/512/1144/1144760.png" alt="" class="user-img">
+    </a>
+  </div>
+  <header id="header" class="header bc23 d-flex justify-content-between color1 show-header">
+    <div id="logo-block" class="header-logo d-flex align-items-center">
+      <a href="http://127.0.0.1:5000/" class="logo d-flex align-items-center">
+        <!-- Flask url_for 引用 static 裡的 image_19.png -->
+        <img id="logo-img" class="logo-img m-2"
+          src="{{url_for('static', filename='image/WhaleSignal_Logo-r(1).png')}}"
+          alt="">
+        <div id="logo-name" class="logo-text m-2 Michroma">WhaleSignal</div>
+      </a>
+    </div>
+        <!-- 🔽 新增漢堡選單 -->
+    <label id="menu-toggle" class="menu-toggle" for="check">
+      <input type="checkbox" id="check"/> 
+      <span></span>
+      <span></span>
+      <span></span>
+    </label>
+
+    <div id="header-info2">
+      <a href="http://127.0.0.1:5000/analysis" id="analysis" class="shape-ex2 m-3 Rajdhan text-shadow">
+        analysis
+        <div class="shape-line"></div>
+      </a>
+      <a href="http://127.0.0.1:5000/pay" id="premium" class="shape-ex2 m-3 Rajdhani text-shadow">
+        premium
+        <div class="shape-line"></div>
+      </a>
+      <a href="http://127.0.0.1:5000/log_in" id="user" class="user d-flex align-items-center text-shadow">
+        <div class="user-account shape-ex2 m-3 Rajdhani">
+          login
+            <div class="shape-line" ></div>
+        </div>
+        <img id="user-img" src="https://cdn-icons-png.flaticon.com/512/1144/1144760.png" alt="" class="user-img">
+      </a>
+    </div>
+  </header>
+  <div class="header-height"></div>
+
+  <div class="main-content">
+    <button class="history-btn" id="toggleHistory"><img src="{{ url_for('static', filename='image/list_icon.png') }}"
+        alt=""></button>
+
+    <div class="history-panel" id="historyPanel">
+      <h3>Archived Records</h3>
+      <ul>
+        {% for record in history_records %}
+        <li> 
+          <button class="history-item" onclick="redirectToAnalysis({{ record.id }})">
+            {{record.id}} - {{ record.song_name }} ({{ record.upload_time }})
+          </button>
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
+    <!-- 平台切換按鈕 -->
+    <div class="analysis-btn-container  d-flex justify-content-center flex-wrap gap-3 color1">
+      <div class="btn-block full-width d-flex justify-content-center">
+        <!-- 預設 Youtube 為 active -->
+        <div class="yt-btn-block yt-btn d-flex justify-content-center align-items-center active"
+          data-platform="youtube">
+          <div class="switch-btn yt-btn">
+            <img src="https://cdn-icons-png.flaticon.com/512/3670/3670147.png" alt="">
+          </div>
+          <span class="btn-text">Youtube</span>
+        </div>
+        <div class="yt-btn-block sptf-btn d-flex justify-content-center align-items-center" data-platform="spotify">
+          <div class="switch-btn sptf-btn">
+            <img src="https://cdn-icons-png.flaticon.com/512/174/174872.png" alt="">
+          </div>
+          <span class="btn-text">Spotify</span>
+        </div>
+        <div class="yt-btn-block am-btn d-flex justify-content-center align-items-center" data-platform="apple-music">
+          <div class="switch-btn am-btn">
+            <img
+              src="https://cdn.iconscout.com/icon/free/png-256/free-apple-music-icon-download-in-svg-png-gif-file-formats--itunes-app-ios-ios14-14-pack-user-interface-icons-2365226.png"
+              alt="">
+          </div>
+          <span class="btn-text">Apple Music</span>
+        </div>
+        <div class="yt-btn-block tidal-btn d-flex justify-content-center align-items-center" data-platform="tidal">
+          <div class="switch-btn tidal-btn">
+            <img src="https://cdn-icons-png.flaticon.com/512/16592/16592443.png" alt="">
+          </div>
+          <span class="btn-text">TIDAL</span>
+        </div>
+        <div class="yt-btn-block amazon-btn d-flex justify-content-center align-items-center"
+          data-platform="amazon-music">
+          <div class="switch-btn amazon-btn">
+            <img class="amazon" src="https://img.icons8.com/?size=512&id=lxwUaALAeQmr&format=png" alt="">
+          </div>
+          <span class="btn-text">Amazon Music</span>
+        </div>
+      </div>
+    </div>
+<!-- menu -->
+<script>
+  document.getElementById("check").addEventListener("change", function () {
+  document.getElementById("header-info").classList.toggle("active");
+  });
+</script>
+
+    <!-- 各平台分析內容 -->
+    <div class="analysis-btn-container color1">
+      <!-- Youtube 區塊 -->
+      <div class="analysis-content active" data-platform="youtube">
+        <div class="d-flex  flex-wrap color1 align-items-center justify-content-center">
+          {% if latest_song.fame_indicator == "會紅喔!" %}
+          <div id="youtube-info" class=" chart info-container">
+            <div class="h50p">
+              <p class="large-number">{{ latest_song.trending_days }}</p>
+              <p class="description">days to 1 million views</p>  
+            </div>
+            <div class="h50p">
+              <div class="song-time-container">
+                <p class="song-title">Song Title：</p><span class="song-name">{{ latest_song.song_name }}</span>
+              </div>
+              <div class="song-time-container">
+                <p class="upload-time">Upload Time：</p><span class="upload-time-value">{{ latest_song.upload_time }}</span>
+              </div>
+            </div>
+          </div>
+          {% else %}
+          <div id="youtube-info" class="chart info-container">
+            <div class="h50p">
+              <p class="large-number">
+                <!-- {{ latest_song.fame_indicator }} -->
+                Below Expectations
+              </p>
+            </div>
+            <div class="h50p">
+              <div class="song-time-container">
+                <p class="song-title">File Name：</p>
+                <span class="song-name">
+                  {{ latest_song.song_name }}
+                  453.A Boogie Wit Da Hoodie - Still Think About You Prod by. Plug Studios NYC Official
+                </span>
+              </div>
+              <div class="song-time-container">
+                <p class="upload-time">Upload Time：</p>
+                <span class="upload-time-value">
+                  <!-- {{ latest_song.upload_time }} -->
+                  {{ latest_song.upload_time }}
+                </span>
+              </div>
+            </div>
+          </div>
+          {% endif %}
+
+          <div id="youtube-doughnutChartContainer" class="chart-container chart">
+            <canvas id="youtube-myDoughnutChart"></canvas>
+          </div>
+          <div id="youtube-barChartContainer" class="chart-container chart">
+            <canvas id="youtube-myBarChart"></canvas>
+          </div>
+          <div id="youtube-countryChartContainer" class="chart-container chart">
+            <canvas id="youtube-myCountryChart"></canvas>
+          </div>
+          <div class="text-chart">
+            <p id="youtube-scenarioText" class="Comment"></p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Spotify 區塊 -->
+      <div class="analysis-content d-flex justify-content-center flex-wrap gap-3 color1" data-platform="spotify"
+        style="display: none;">
+        <div class="d-flex  flex-wrap color1 align-items-center justify-content-center">
+          {% if latest_song.fame_indicator == "會紅喔!" %}
+          <div id="spotify-info" class="chart info-container">
+            <div class="h50p">
+              <p class="large-number">{{ latest_song.trending_days }}</p>
+              <p class="description">days to 1 million views</p>
+            </div>
+            <div class="h50p">
+              <div class="song-time-container">
+                <p class="song-title">Song Title：</p><span class="song-name">{{ latest_song.song_name }}</span>
+              </div>
+              <div class="song-time-container">
+                <p class="upload-time">Upload Time：</p><span class="upload-time-value">{{ latest_song.upload_time
+                  }}</span>
+              </div>
+            </div>
+          </div>
+          {% else %}
+          <div id="spotify-info" class="chart info-container">
+            <div class="h50p">
+              <p class="large-number">
+                <!-- {{ latest_song.fame_indicator }} -->
+                Below expectations
+              </p>
+            </div>
+            <div class="h50p">
+              <div class="song-time-container">
+                <p class="song-title">File Name：</p><span class="song-name">{{ latest_song.song_name }}</span>
+              </div>
+              <div class="song-time-container">
+                <p class="upload-time">Upload Time：</p>
+                <span class="upload-time-value">
+                  <!-- {{ latest_song.upload_time }} -->
+                  {{ latest_song.upload_time }}
+                </span>
+              </div>
+            </div>
+          </div>
+          {% endif %}
+          <div id="spotify-doughnutChartContainer" class="chart-container chart">
+            <canvas id="spotify-myDoughnutChart"></canvas>
+          </div>
+          <div id="spotify-barChartContainer" class="chart-container chart">
+            <canvas id="spotify-myBarChart"></canvas>
+          </div>
+          <div id="spotify-countryChartContainer" class="chart-container chart">
+            <canvas id="spotify-myCountryChart"></canvas>
+          </div>
+          <div class="text-chart">
+            <p id="spotify-scenarioText" class="Comment"></p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Apple Music 區塊 -->
+      <div class="analysis-content d-flex justify-content-center flex-wrap gap-3 color1" data-platform="apple-music"
+        style="display: none;">
+        <div class="d-flex  flex-wrap color1 align-items-center justify-content-center">
+          {% if latest_song.fame_indicator == "會紅喔!" %}
+          <div id="apple-music-info" class="chart info-container">
+            <div class="h50p">
+              <p class="large-number">{{ latest_song.trending_days }}</p>
+              <p class="description">days to 1 million views</p>
+            </div>
+            <div class="h50p">
+              <div class="song-time-container">
+                <p class="song-title">Song Title：</p><span class="song-name">{{ latest_song.song_name }}</span>
+              </div>
+              <div class="song-time-container">
+                <p class="upload-time">Upload Time：</p><span class="upload-time-value">{{ latest_song.upload_time
+                  }}</span>
+              </div>
+            </div>
+          </div>
+          {% else %}
+          <div id="apple-music-info" class="chart info-container">
+            <div class="h50p">
+              <p class="large-number">
+                <!-- {{ latest_song.fame_indicator }} -->
+                Below expectations
+              </p>
+            </div>
+            <div class="h50p">
+              <div class="song-time-container">
+                <p class="song-title">File Name：</p><span class="song-name">{{ latest_song.song_name }}</span>
+              </div>
+              <div class="song-time-container">
+                <p class="upload-time">Upload Time：</p>
+                <span class="upload-time-value">
+                  <!-- {{ latest_song.upload_time }} -->
+                  {{ latest_song.upload_time }}
+                </span>
+              </div>
+            </div>
+          </div>
+          {% endif %}
+          <div id="apple-music-doughnutChartContainer" class="chart-container chart">
+            <canvas id="apple-music-myDoughnutChart"></canvas>
+          </div>
+          <div id="apple-music-barChartContainer" class="chart-container chart">
+            <canvas id="apple-music-myBarChart"></canvas>
+          </div>
+          <div id="apple-music-countryChartContainer" class="chart-container chart">
+            <canvas id="apple-music-myCountryChart"></canvas>
+          </div>
+          <div class="full-width text-chart">
+            <p id="apple-music-scenarioText" class="Comment"></p>
+          </div>
+        </div>
+      </div>
+
+      <!-- TIDAL 區塊 -->
+      <div class="analysis-content d-flex justify-content-center flex-wrap gap-3 color1" data-platform="tidal"
+        style="display: none;">
+        <div class="d-flex  flex-wrap color1 align-items-center justify-content-center">
+          {% if latest_song.fame_indicator == "會紅喔!" %}
+          <div id="tidal-info" class="chart info-container">
+            <div class="h50p">
+              <p class="large-number">{{ latest_song.trending_days }}</p>
+              <p class="description">days to 1 million views</p>
+            </div>
+            <div class="h50p">
+              <div class="song-time-container">
+                <p class="song-title">Song Title：</p><span class="song-name">{{ latest_song.song_name }}</span>
+              </div>
+              <div class="song-time-container">
+                <p class="upload-time">Upload Time：</p><span class="upload-time-value">{{ latest_song.upload_time
+                  }}</span>
+              </div>
+            </div>
+          </div>
+          {% else %}
+          <div id="tidal-info" class="chart info-container">
+            <div class="h50p">
+              <p class="large-number">
+                <!-- {{ latest_song.fame_indicator }} -->
+                Below expectations
+              </p>
+            </div>
+            <div class="h50p">
+              <div class="song-time-container">
+                <p class="song-title">File Name：</p><span class="song-name">{{ latest_song.song_name }}</span>
+              </div>
+              <div class="song-time-container">
+                <p class="upload-time">Upload Time：</p>
+                <span class="upload-time-value">
+                  <!-- {{ latest_song.upload_time }} -->
+                  {{ latest_song.upload_time }}
+                </span>
+              </div>
+            </div>
+          </div>
+          {% endif %}
+          <div id="tidal-doughnutChartContainer" class="chart-container chart">
+            <canvas id="tidal-myDoughnutChart"></canvas>
+          </div>
+          <div id="tidal-barChartContainer" class="chart-container chart">
+            <canvas id="tidal-myBarChart"></canvas>
+          </div>
+          <div id="tidal-countryChartContainer" class="chart-container chart">
+            <canvas id="tidal-myCountryChart"></canvas>
+          </div>
+          <div class="full-width text-chart">
+            <p id="tidal-scenarioText" class="Comment"></p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Amazon Music 區塊 -->
+      <div class="analysis-content d-flex justify-content-center flex-wrap gap-3 color1" data-platform="amazon-music"
+        style="display: none;">
+        <div class="d-flex  flex-wrap color1 align-items-center justify-content-center">
+          {% if latest_song.fame_indicator == "會紅喔!" %}
+          <div id="samazon-music-info" class="chart info-container">
+            <div class="h50p">
+              <p class="large-number">{{ latest_song.trending_days }}</p>
+              <p class="description">days to 1 million views</p>
+            </div>
+            <div class="h50p">
+              <div class="song-time-container">
+                <p class="song-title">Song Title：</p><span class="song-name">{{ latest_song.song_name }}</span>
+              </div>
+              <div class="song-time-container">
+                <p class="upload-time">Upload Time：</p><span class="upload-time-value">{{ latest_song.upload_time
+                  }}</span>
+              </div>
+            </div>
+          </div>
+          {% else %}
+          <div id="amazon-music-info" class="chart info-container">
+            <div class="h50p">
+              <p class="large-number">
+                <!-- {{ latest_song.fame_indicator }} -->
+                Below expectations
+              </p>
+            </div>
+            <div class="h50p">
+              <div class="song-time-container">
+                <p class="song-title">File Name：</p><span class="song-name">{{ latest_song.song_name }}</span>
+              </div>
+              <div class="song-time-container">
+                <p class="upload-time">Upload Time：</p>
+                <span class="upload-time-value">
+                  <!-- {{ latest_song.upload_time }} -->
+                  {{ latest_song.upload_time }}
+                </span>
+              </div>
+            </div>
+          </div>
+          {% endif %}
+          <div id="amazon-music-doughnutChartContainer" class="chart-container chart">
+            <canvas id="amazon-music-myDoughnutChart"></canvas>
+          </div>
+          <div id="amazon-music-barChartContainer" class="chart-container chart">
+            <canvas id="amazon-music-myBarChart"></canvas>
+          </div>
+          <div id="amazon-music-countryChartContainer" class="chart-container chart">
+            <canvas id="amazon-music-myCountryChart"></canvas>
+          </div>
+          <div class="full-width text-chart">
+            <p id="amazon-music-scenarioText" class="Comment"></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="footer bc32 d-flex justify-content-between color1">
+    <div class="d-flex flex-column justify-content-center text-start align-items m100">
+      <div class="footer-text  w-auto">email：whalesignal@gmail.com</div>
+      <div class="footer-text  w-auto">producer：Eric Wang, Ben Chan, Andrew Chang, Alice Lu, Joseph Fang, Jin Chang
+      </div>
+    </div>
+    <div class="d-flex align-items-center justify-content-center ">
+      <a href="" class="footer-btn animate__animated">
+        <img src="https://cdn-icons-png.flaticon.com/512/15047/15047435.png" alt="fb-icon" class="fb w50 h50">
+      </a>
+      <a href="" class="footer-btn animate__animated">
+        <img src="https://cdn-icons-png.flaticon.com/512/15707/15707749.png" alt="ig-icon" class="ig w50 h50">
+      </a>
+      <a href="" class="footer-btn animate__animated">
+        <img src="https://cdn-icons-png.flaticon.com/512/5969/5969020.png" alt="x-icon" class="x w50 h50">
+      </a>
+    </div>
+  </footer>
+  <!-- 會員 -->
+  <script>
+    // 假設有個變數來判斷會員狀態
+const isPaidMember = localStorage.getItem("permission");
+if (isPaidMember == 0) {
+  console.log("非付費會員買不起哈哈")
+  document.querySelectorAll('.chart-container').forEach(el => {
+el.classList.add('non-member');
+});
+document.querySelectorAll('.history-btn').forEach(el => {
+el.classList.add('non-member');
+});
+document.querySelectorAll('.text-chart').forEach(el => {
+el.classList.add('non-member');
+});
+document.querySelectorAll('.amazon-btn').forEach(el => {
+el.classList.add('non-member');
+});
+document.querySelectorAll('.tidal-btn').forEach(el => {
+el.classList.add('non-member');
+});
+document.querySelectorAll('.am-btn').forEach(el => {
+el.classList.add('non-member');
+});
+document.querySelectorAll('.sptf-btn').forEach(el => {
+el.classList.add('non-member');
+});
+} else {
+  console.log("是付費會員哈哈盤子")
+   // 移除所有 .chart-container, .text-chart, .amazon-btn, .tidal-btn, .am-btn, .sptf-btn 的 non-member 類別
+document.querySelectorAll('.chart-container').forEach(el => {
+el.classList.remove('non-member');
+});
+document.querySelectorAll('.history-btn').forEach(el => {
+  el.classList.remove('non-member');});
+document.querySelectorAll('.text-chart').forEach(el => {
+el.classList.remove('non-member');
+});
+document.querySelectorAll('.amazon-btn').forEach(el => {
+el.classList.remove('non-member');
+});
+document.querySelectorAll('.tidal-btn').forEach(el => {
+el.classList.remove('non-member');
+});
+document.querySelectorAll('.am-btn').forEach(el => {
+el.classList.remove('non-member');
+});
+document.querySelectorAll('.sptf-btn').forEach(el => {
+el.classList.remove('non-member');
+});
+}
+  </script>
+
+
+  <!-- 高度 -->
+  <script>
+    function adjustMainContentHeight() {
+      const mainContent = document.querySelector('.main-content');
+      const activeContent = document.querySelector('.analysis-content.active');
+      const textChart = activeContent ? activeContent.querySelector('.text-chart') : null;
+
+      if (mainContent && activeContent) {
+        let newHeight = activeContent.scrollHeight; // 先取 activeContent 高度
+
+        // if (textChart) {
+        //   newHeight += textChart.scrollHeight; // 再加上 text-chart 的高度
+        // }
+
+        console.log("設定 mainContent 高度:", newHeight);
+        mainContent.style.height = newHeight + 155 + 'px';
+      } else {
+        console.log("找不到 .analysis-content.active 或 .text-chart");
+      }
+    }
+
+
+    // 確保 DOM 載入後執行
+    document.addEventListener('DOMContentLoaded', () => {
+      console.log("DOMContentLoaded fired");
+      adjustMainContentHeight();
+    });
+
+    // 確保所有資源載入後執行
+    window.addEventListener('load', () => {
+      console.log("Window load event fired");
+      adjustMainContentHeight();
+    });
+
+    // 監聽視窗大小變化
+    window.addEventListener('resize', () => {
+      console.log("Window resized");
+      adjustMainContentHeight();
+    });
+
+    // 如果 `canvas` 或其他內容是透過 JS 動態載入，延遲調整高度
+    setTimeout(() => {
+      console.log("Delayed height adjustment");
+      adjustMainContentHeight();
+    }, 1000);
+
+    // 使用 `MutationObserver` 監聽 DOM 變動（例如 `.analysis-content` 切換）
+    const observer = new MutationObserver((mutationsList) => {
+      console.log("DOM Mutation detected:", mutationsList);
+      adjustMainContentHeight();
+    });
+
+    // 監聽 `.main-content` 內部的變化
+    const mainContent = document.querySelector('.main-content');
+    if (mainContent) {
+      observer.observe(mainContent, { childList: true, subtree: true });
+    } else {
+      console.log("main-content not found for MutationObserver");
+    }
+  </script>
+  <!-- 歷史選單 -->
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const toggleButton = document.getElementById("toggleHistory");
+      const historyPanel = document.getElementById("historyPanel");
+
+      // 切換面板顯示/隱藏
+      toggleButton.addEventListener("click", function (event) {
+        historyPanel.classList.toggle("active");
+        toggleButton.classList.toggle("active");
+        event.stopPropagation(); // 防止點擊按鈕時事件冒泡到 document
+      });
+
+      // 點擊頁面其他地方時關閉面板
+      document.addEventListener("click", function (event) {
+        // 如果點擊的地方既不是 toggleButton 也不是 historyPanel
+        if (!historyPanel.contains(event.target) && !toggleButton.contains(event.target)) {
+          historyPanel.classList.remove("active");
+          toggleButton.classList.remove("active");
+        }
+      });
+    });
+  </script>
+  <!-- 平台切換腳本 -->
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const switchButtons = document.querySelectorAll(".yt-btn-block");
+      const analysisContents = document.querySelectorAll(".analysis-content");
+
+      let activePlatform = "youtube"; // 預設 Youtube
+      document.querySelector(`[data-platform="${activePlatform}"]`).classList.add("active");
+      document.querySelector(`.analysis-content[data-platform="${activePlatform}"]`).classList.add("active");
+
+      switchButtons.forEach(button => {
+        button.addEventListener("click", function () {
+          const selectedPlatform = this.getAttribute("data-platform");
+          if (selectedPlatform !== activePlatform) {
+            document.querySelector(".yt-btn-block.active").classList.remove("active");
+            this.classList.add("active");
+            document.querySelector(".analysis-content.active").classList.remove("active");
+            document.querySelector(`.analysis-content[data-platform="${selectedPlatform}"]`).classList.add("active");
+            activePlatform = selectedPlatform;
+          }
+        });
+      });
+    });
+  </script>
+  <!-- login -->
+  <script src="{{url_for('static', filename='javascript/homepage.js')}}"></script>
+   
+  <!-- <script>
+    document.addEventListener('DOMContentLoaded', function () {
+    const fileInput = document.getElementById('file-input');
+    const fileNameDisplay = document.getElementById('file-name');
+    const dropArea = document.getElementById('drop-area');
+
+    // 處理檔案選擇
+    fileInput.addEventListener('change', function() {
+        const file = fileInput.files[0];
+        if (file) {
+            fileNameDisplay.textContent = file.name;
+            fileNameDisplay.classList.add('active');  // **新增 active class**
+        } else {
+            fileNameDisplay.textContent = "Drop music files here, or click to select";
+            fileNameDisplay.classList.remove('active');  // **移除 active class**
+        }
+    });
+     // 確保選取到按鈕
+    const loginButton = document.getElementById("user-account");
+    if (!loginButton) {
+         console.error("❌ loginButton not found!");
+         return;  // 如果找不到按鈕，就停止執行
+     }
+ 
+    // 檢查 localStorage 是否有儲存的 username
+    const username = localStorage.getItem("username");
+    if (username) {
+        // ✅ **使用者已登入，按鈕變成 username**
+        loginButton.textContent = username;
+        loginButton.href = "#";  // 避免跳轉
+
+        // ✅ **登出功能**
+        loginButton.addEventListener("click", function () {
+            event.preventDefault();
+            const confirmLogout = confirm("確定要登出嗎？");
+            if (confirmLogout) {
+                localStorage.removeItem("username");  // 清除登入資訊
+                
+                // ✅ **不刷新頁面，直接更新 UI**
+                loginButton.textContent = "Login";
+                loginButton.removeAttribute("href"); // **移除 href，避免點擊後跳轉**
+                
+                // ✅ **刪除登出事件，防止仍然執行 logout**
+                const newLoginButton = loginButton.cloneNode(true);
+                newLoginButton.href = "http://127.0.0.1:5000/log_in";  // **正確設定 href**
+                loginButton.replaceWith(newLoginButton);
+            }
+        });
+    } else {
+        // ✅ **使用者未登入時，按鈕維持 "Login"**
+        loginButton.textContent = "Login";
+        loginButton.href = "http://127.0.0.1:5000/log_in";  // 正確的登入連結
+        // **確保登出監聽器被移除**
+        loginButton.replaceWith(loginButton.cloneNode(true));
+    }
+  </script> -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const loginButtons = document.querySelectorAll(".user-account");
+
+    if (loginButtons.length === 0) {
+         console.error("❌ user-account not found!");
+         return;
+    }
+ 
+    const username = localStorage.getItem("username");
+
+    if (username) {
+        // ✅ 使用者已登入，變更按鈕為 username 並綁定登出功能
+        loginButtons.forEach(button => {
+            button.textContent = username;
+            button.href = "#"; // 避免點擊後跳轉
+            button.removeEventListener("click", handleLoginClick); // **先移除登錄事件**
+            button.addEventListener("click", handleLogoutClick); // **綁定登出**
+        });
+
+    } else {
+        // ✅ 使用者未登入時，按鈕變回 Login 並指向登入頁
+        loginButtons.forEach(button => {
+            button.textContent = "Login";
+            button.href = "http://127.0.0.1:5000/log_in";
+            button.removeEventListener("click", handleLogoutClick); // **先移除登出事件**
+            button.addEventListener("click", handleLoginClick); // **綁定登入**
+        });
+    }
+
+    // ✅ 登出功能（確認是否要登出）
+    function handleLogoutClick(event) {
+        event.preventDefault();
+        const confirmLogout = confirm("確定要登出嗎？");
+        if (confirmLogout) {
+            localStorage.removeItem("username");
+
+            // **登出後恢復成 Login 狀態**
+            loginButtons.forEach(button => {
+                button.textContent = "Login";
+                button.href = "http://127.0.0.1:5000/log_in";
+                button.removeEventListener("click", handleLogoutClick); // **移除登出監聽**
+                button.addEventListener("click", handleLoginClick); // **恢復登入監聽**
+            });
+            window.location.href = "/";
+        }
+    }
+
+    // ✅ 登入功能（點擊時前往登入頁面）
+    function handleLoginClick(event) {
+        // 這裡不需要 `preventDefault()`，因為我們希望它能夠跳轉
+        window.location.href = "http://127.0.0.1:5000/log_in";
+    }
+});
+  </script>
+  <!-- 後端產生的 JSON 物件 (直接注入，不需再解析) -->
+  <script>
+    const chartData = {{ data_str| safe }};
+    console.log("Parsed chartData:", chartData);
+
+    // 將 scenario 文字填入各平台
+    const platforms = ["youtube", "spotify", "apple-music", "tidal", "amazon-music"];
+    platforms.forEach(platform => {
+      if (chartData[platform]) {
+        document.getElementById(`${platform}-scenarioText`).innerText = chartData[platform].scenario;
+      }
+    });
+  </script>
+
+  <!-- 建立圖表 (包含 zoom 插件與動畫) -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      // Zoom 插件 (Bar)
+      const progressiveZoomBarPlugin = {
+        id: 'progressiveZoomBarPlugin',
+        afterDatasetDraw(chart, args, options) {
+          const ctx = chart.ctx;
+          const meta = chart.getDatasetMeta(args.index);
+          meta.data.forEach((bar) => {
+            try {
+              const zoom = bar._zoomProgress || 0;
+              if (zoom > 0) {
+                const x = Math.min(bar.base, bar.x);
+                const width = Math.abs(bar.x - bar.base);
+                const centerY = bar.y;
+                const newHeight = bar.height + zoom;
+                const newY = centerY - newHeight / 2;
+                ctx.save();
+                let bg = bar.options.backgroundColor;
+                if (Array.isArray(bg)) {
+                  bg = bg[bar.index] || bg[0];
+                }
+                ctx.fillStyle = bg;
+                ctx.fillRect(x, newY, width, newHeight);
+                ctx.restore();
+              }
+            } catch (e) {
+              console.error(e);
+            }
+          });
+        }
+      };
+      function animateZoomBar(chart, zoomAmount = 10, animationSpeed = 0.05) {
+        const activeElements = chart.getActiveElements();
+        let updated = false;
+        chart.data.datasets.forEach((dataset, datasetIndex) => {
+          const meta = chart.getDatasetMeta(datasetIndex);
+          meta.data.forEach((bar) => {
+            const isActive = activeElements.some(a => a.element === bar);
+            const target = isActive ? zoomAmount : 0;
+            if (bar._zoomProgress === undefined) {
+              bar._zoomProgress = 0;
+            }
+            const diff = target - bar._zoomProgress;
+            if (Math.abs(diff) > 0.1) {
+              bar._zoomProgress += diff * animationSpeed;
+              updated = true;
+            } else {
+              bar._zoomProgress = target;
+            }
+          });
+        });
+        if (updated) {
+          chart.draw();
+          requestAnimationFrame(() => animateZoomBar(chart, zoomAmount, animationSpeed));
+        }
+      }
+
+      // Zoom 插件 (Doughnut)
+      const progressiveZoomArcPlugin = {
+        id: 'progressiveZoomArcPlugin',
+        beforeDatasetDraw(chart, args, options) {
+          const meta = chart.getDatasetMeta(args.index);
+          meta.data.forEach((arc) => {
+            if (!arc.$originalOuterRadius) {
+              arc.$originalOuterRadius = arc.outerRadius;
+            }
+            const zoom = arc._zoomProgress || 0;
+            arc.outerRadius = arc.$originalOuterRadius + zoom;
+          });
+        }
+      };
+      function animateZoomArc(chart, zoomAmount = 10, animationSpeed = 0.05) {
+        const activeElements = chart.getActiveElements();
+        let updated = false;
+        chart.data.datasets.forEach((dataset, datasetIndex) => {
+          const meta = chart.getDatasetMeta(datasetIndex);
+          meta.data.forEach((arc) => {
+            const isActive = activeElements.some(a => a.element === arc);
+            const target = isActive ? zoomAmount : 0;
+            if (arc._zoomProgress === undefined) {
+              arc._zoomProgress = 0;
+            }
+            const diff = target - arc._zoomProgress;
+            if (Math.abs(diff) > 0.1) {
+              arc._zoomProgress += diff * animationSpeed;
+              updated = true;
+            } else {
+              arc._zoomProgress = target;
+            }
+          });
+        });
+        if (updated) {
+          chart.draw();
+          requestAnimationFrame(() => animateZoomArc(chart, zoomAmount, animationSpeed));
+        }
+      }
+
+      // 根據 chartData 建立各平台的圖表
+      const platforms = ["youtube", "spotify", "apple-music", "tidal", "amazon-music"];
+      platforms.forEach(platform => {
+        if (chartData[platform]) {
+          const dataObj = chartData[platform];
+          // Doughnut (性別分布)
+          const doughnutCtx = document.getElementById(`${platform}-myDoughnutChart`).getContext('2d');
+          const doughnutConfig = {
+            type: 'doughnut',
+            data: {
+              labels: dataObj.gender.categories,
+              datasets: [{
+                label: 'GENDER',
+                data: dataObj.gender.percentages,
+                backgroundColor: ['#31c7ba', '#FF6F91', '#ffea4a'],
+                hoverOffset: 10,
+                borderColor: 'rgba(255, 255, 255, 0.5)', // 設定邊框顏色（透明黑色）
+                borderWidth: 1,
+                hoverRadius: 10, // 設定 hover 區域的大小
+                hitRadius: 15   // 設定觸及範圍
+
+              }]
+            },
+            options: {
+              responsive: true,
+              maintainAspectRatio: false,
+              cutout: '65%',
+              layout: { padding: 15 },
+              plugins: {
+                legend: {
+                  position: 'top', labels: {
+                    color: '#EEEEEE', font: {
+                      family: 'Rajdhani'
+                      // 設定圖例文字大小
+                    }
+                  }
+                },
+                title: {
+                  display: true, text: 'GENDER', color: '#EEEEEE', padding: {
+                    top: 0,   // 調整標題與圖表的間距
+
+                  }, font: {
+                    size: 16,
+                    family: 'Michroma', // 字型
+                    weight: 'bold' // 字重
+                  }
+                }
+              },
+              onHover: (event, activeElements, chart) => { animateZoomArc(chart, 10, 0.05); }
+            },
+            plugins: [progressiveZoomArcPlugin]
+          };
+          new Chart(doughnutCtx, doughnutConfig);
+
+          // Bar (年齡分布)
+          const barCtx = document.getElementById(`${platform}-myBarChart`).getContext('2d');
+          const barConfig = {
+            type: 'bar',
+            data: {
+              labels: dataObj.age.categories,
+              datasets: [{
+                label: 'AGE',
+                data: dataObj.age.percentages,
+                backgroundColor: [
+                  '#31c7ba',
+                  '#53d3a3',       // 藍綠色
+                  '#87e391',       // 藍色
+                  '#beef7e',       // 黃色
+                  '#f9f871',       // 紅色
+                  '#ff8945',
+                  '#FF6F91',    // 紫色
+                  '#ce7fd6'        // 橙色 // 顏色8
+                ],
+                borderColor: [
+                  'rgba(255, 255, 255, 0.5)'
+                ],
+                borderWidth: 1
+              }]
+            },
+            options: {
+              indexAxis: 'y',
+              responsive: true,
+              maintainAspectRatio: false,
+              layout: { padding: 15 },
+              scales: {
+                x: { display: false },
+                y: {
+                  ticks: {
+                    color: '#EEEEEE', font: {
+                      size: 16,
+                      family: 'Rajdhani' // 1.25rem 代替 20px
+                    }
+                  }
+                }
+              },
+              plugins: {
+                legend: { display: false },
+                title: {
+                  display: true, text: 'AGE', color: '#EEEEEE', font: {
+                    size: 16,
+                    family: 'Michroma', // 字型
+                    weight: 'bold' // 字重
+                  }
+                }
+              },
+              onHover: (event, activeElements, chart) => { animateZoomBar(chart, 10, 0.05); }
+            },
+            plugins: [progressiveZoomBarPlugin]
+          };
+          new Chart(barCtx, barConfig);
+
+          // Bar (地區分布)
+          const countryCtx = document.getElementById(`${platform}-myCountryChart`).getContext('2d');
+          const countryConfig = {
+            type: 'bar',
+            data: {
+              labels: dataObj.country.categories,
+              datasets: [{
+                label: 'AREA',
+                data: dataObj.country.percentages,
+                backgroundColor: [
+                  '#87e391',       // 藍色
+                  '#beef7e',       // 黃色
+                  '#f9f871',       // 紅色
+                  '#ff8945',
+                  '#FF6F91',    // 紫色
+                  '#ce7fd6'        // 橙色 // 顏色8
+                ],
+                borderColor: ['rgba(255,255,255,0.5)'],
+                borderWidth: 1
+              }]
+            },
+            options: {
+              indexAxis: 'y',
+              responsive: true,
+              maintainAspectRatio: false,
+              layout: { padding: 15 },
+              scales: {
+                x: { display: false },
+                y: {
+                  ticks: {
+                    color: '#EEEEEE', font: {
+                      size: 16,
+                      family: 'Rajdhani'
+                    }
+                  }
+                }
+              },
+              plugins: {
+                legend: { display: false },
+                title: {
+                  display: true, text: 'AREA', color: '#EEEEEE', font: {
+                    size: 16,
+                    family: 'Michroma', // 字型
+                    weight: 'bold' // 字重
+                  }
+                },
+                tooltip: {
+                  position: 'nearest',
+                  xAlign: 'right',
+                  yAlign: 'center',
+                  callbacks: {
+                    label: function (context) {
+                      const value = context.parsed.x;
+                      return `${context.dataset.label}: ${value}%`;
+                    }
+                  }
+                }
+              },
+              onHover: (event, activeElements, chart) => { animateZoomBar(chart, 10, 0.05); }
+            },
+            plugins: [progressiveZoomBarPlugin]
+          };
+          new Chart(countryCtx, countryConfig);
+        }
+      });
+    });
+  </script>
+  <script>
+    function redirectToAnalysis(recordId) {
+        window.location.href = `/analysis/${recordId}`;
+    }
+  </script>
+</body>
+</html>

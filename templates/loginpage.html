@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WhaleSignal - Login</title>
+    <link rel="icon" type="image/png" href="{{url_for('static', filename='image/WhaleSignal_Logo-r(1).png')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='css/loginpage.css')}}">
+</head>
+<body>
+    
+    <div class="container">
+        <div class="login-card">
+            <!-- Left side - Introduction -->
+            <div class="intro-panel">
+                <div class="video-background">
+                    <video autoplay muted loop playsinline>
+                        <source src="{{url_for('static', filename='video/202502.mp4')}}" type="video/mp4">
+                    </video>
+                </div>
+                <div class="overlay"></div>
+                <div class="intro-content">
+                    <h1>WhaleSignal</h1>
+                    <p>Like the legendary 52Hz whale, your music is unique. WhaleSignal helps you reach the right listeners—because your voice matters.</p>
+                </div>
+
+            </div>
+
+            <!-- Right side - Form -->
+            <div class="form-panel">
+                <div class="tabs">
+                    <button class="tab-btn active" data-tab="login">LogIn</button>
+                    <button class="tab-btn" data-tab="signup">Sign Up</button>
+                </div>
+            
+                <form id="loginForm" class="login-form" action = "/login", method="POST">
+                    <!-- Log In Fields -->
+                    <div class="input-group login-field">
+                        <input type="email" id="login-email" name="email" placeholder="Email">
+                        <svg class="check-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                        <span class="error-message"></span>
+                    </div>
+                    <div class="input-group login-field">
+                        <input type="password" id="login-password" name="password" placeholder="Password">
+                        <svg class="check-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                        <span class="error-message"></span>
+                    </div>
+                
+                    <!-- Sign Up Fields -->
+                    <div class="input-group signup-field" style="display: none;">
+                        <input type="email" id="signup-email" name="email" placeholder="Email">
+                        <svg class="check-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                        <span class="error-message"></span>
+                    </div>
+                    <div class="input-group signup-field" style="display: none;">
+                        <input type="text" id="signup-username" name="username" placeholder="Username">
+                        <svg class="check-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                        <span class="error-message"></span>
+                    </div>
+                    <div class="input-group signup-field" style="display: none;">
+                        <input type="password" id="signup-password" name="password" placeholder="Password">
+                        <svg class="check-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                        <span class="error-message"></span>
+                    </div>
+                    <div class="input-group signup-field" style="display: none;">
+                        <input type="password" id="signup-confirm-password" name = "confirm_password" placeholder="Confirm Password">
+                        <svg class="check-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                        <span class="error-message"></span>
+                    </div>
+                
+                    <button type="submit" class="submit-btn">Log In</button>
+                </form>
+                
+            </div>
+        </div>
+    </div>
+    <script src="{{ url_for('static', filename='javascript/loginpage.js') }}"></script>
+    
+</body>
+</html>

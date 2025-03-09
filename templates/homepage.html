@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- CSS only -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Michroma&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <title>WhaleSignal</title>
+    <link href = "{{url_for('static', filename='css/main.css')}}" rel="stylesheet">
+    <link href = "{{url_for('static', filename='css/homepage.css')}}" rel="stylesheet">
+    <link href = "{{url_for('static', filename='css/entrance-animation.css')}}" rel="stylesheet">
+    <link rel="icon" type="image/png" href="{{url_for('static', filename='image/WhaleSignal_Logo-r(1).png')}}">
+    <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+  
+</head>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="{{ url_for('static', filename='javascript/jquery.ripples.js') }}"></script>
+<script>
+    function startLoadingAnimation() {
+        document.querySelector(".loadcontainer").classList.add("active");
+    }
+    function stopLoadingAnimation() {
+        document.querySelector(".loadcontainer").classList.remove("active");
+    }
+    document.addEventListener('DOMContentLoaded', function () {
+        const fileInput = document.getElementById('file-input');
+        const fileNameDisplay = document.getElementById('file-name');
+        const uploadButton = document.querySelector('.upload-btn');
+        const youtubeInput = document.querySelector('.upload-options input');
+
+        uploadButton.addEventListener('click', function () {
+            const file = fileInput.files[0];
+            const youtubeURL = youtubeInput.value.trim();
+            const username = localStorage.getItem("username");
+            if (username)   {
+                if (file) {
+                startLoadingAnimation();
+                uploadFile(file);
+            } else if (youtubeURL) {
+                startLoadingAnimation();
+                uploadYoutubeURL(youtubeURL);
+            } else {
+                alert("Please select a file or enter a YouTube URL.");
+            }
+            }
+            else {
+                alert("Please log in first.");
+            }
+            
+        });
+
+        function uploadFile(file) {
+            const formData = new FormData();
+            formData.append("file", file);
+
+            fetch("http://127.0.0.1:5000/upload", {
+                method: "POST",
+                body: formData,
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.message) {
+            window.location.href = "analysis";  // ✅ 上傳成功後跳轉到 result.html
+        }
+            })
+            .catch(error => {
+                console.error("Error:", error);
+                stopLoadingAnimation();
+            });
+        }
+
+        function uploadYoutubeURL(youtubeURL) {
+            fetch("http://127.0.0.1:5000/upload_url", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ youtube_url: youtubeURL })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.message) {
+            window.location.href = "analysis";  // ✅ 上傳成功後跳轉到 result.html
+        };
+            })
+            .catch(error => {
+                console.error("Error:", error);
+                stopLoadingAnimation();
+            });
+        }
+    });
+</script>
+<script>
+    
+    window.addEventListener('scroll', function() {
+        const header = document.getElementById('header');
+        const scrollPosition = window.scrollY;  // 獲取滾動位置
+        const viewportHeight = window.innerHeight;  // 獲取視窗高度
+
+        console.log(scrollPosition, viewportHeight);  // 檢查滾動位置與視窗高度
+
+        // 滾動超過視窗高度時顯示 header
+        if (scrollPosition > viewportHeight*0.8) {
+            header.classList.add('show-header');
+        } else {
+            header.classList.remove('show-header');
+        }
+    });
+    document.addEventListener('scroll', function() {
+        const arrowDownBlock = document.querySelector('.arrow-down-block');
+        arrowDownBlock.classList.add('move');
+        const viewportHeight = window.innerHeight;  // 獲取視窗高度
+        // 當滾動超過 100px 時，分開控制移動與透明度
+        if (window.scrollY > viewportHeight*0.5) {
+            
+            arrowDownBlock.classList.add('fade');  // 開始變透明
+        } else { 
+            arrowDownBlock.classList.remove('fade');  // 變回不透明
+        }
+    });
+</script>
+
+<body>
+    <div id="loading-screen">
+      <div id="water-drop"></div>
+      <div id="ripple"></div>
+      <h1 id="logo-text">WhaleSignal</h1>
+      <div class="progress-container">
+        <div class="progress"></div>
+        <div class="loading-text">0%</div>
+      </div>
+      <button id="skip-button">Skip</button>
+    </div>
+    <div class="banner" id="video-container">
+        <video autoplay muted loop playsinline preload="auto" id="homepage-video">
+          <source src="{{ url_for('static', filename='video/intro1.mp4') }}" type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
+        <div class="video-overlay"></div>
+        <div class="banner-text">
+          <h1 class="big-title">WhaleSignal</h1>
+          <p class="text-center sub" id="typing-text">WhaleSignal uses data-driven analysis to provide smart predictions.</p>
+        </div>
+        <div class="arrow-down-block color1 d-flex flex-column">
+            <div class="text-center text-shadow2">
+                Scroll down
+            </div>
+            <div class="arrow-down"></div>
+        </div>
+    </div>
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="{{url_for('static', filename='javascript/entrance-animation.js')}}"></script>
+  <script>
+    $(document).ready(function() {
+      $("#video-container").ripples({
+        resolution: 256,
+        dropRadius: 20,
+        perturbance: 0.03
+      });
+    });
+  </script>
+
+          
+
+  <div id="header-info" class="header-info d-flex align-items-center">
+    <a href="http://127.0.0.1:5000/analysis"  class="analysis-btn shape-ex2 m-3 Rajdhani text-shadow">analysis
+      <div class="shape-line"></div>
+    </a>
+    <a href="http://127.0.0.1:5000/pay" id="premium" class="shape-ex2 m-3 Rajdhani text-shadow">premium
+      <div class="shape-line"></div>
+    </a>
+    <a href="http://127.0.0.1:5000/log_in" id="user" class="user d-flex align-items-center text-shadow">
+      <div  class="user-account shape-ex2 m-3 Rajdhani user-account">
+        login
+        <div class="shape-line"></div>
+      </div>
+      <img id="user-img" src="https://cdn-icons-png.flaticon.com/512/1144/1144760.png" alt="" class="user-img">
+    </a>
+  </div>
+    <header id="header" class="header bc23 d-flex justify-content-between color1">
+    <div id="logo-block" class="header-logo d-flex align-items-center">
+      <a href="http://127.0.0.1:5000/" class="logo d-flex align-items-center">
+        <!-- Flask url_for 引用 static 裡的 image_19.png -->
+        <img id="logo-img" class="logo-img m-2"
+          src="{{url_for('static', filename='image/WhaleSignal_Logo-r(1).png')}}"
+          alt="">
+        <div id="logo-name" class="logo-text m-2 Michroma">WhaleSignal</div>
+      </a>
+    </div>
+        <!-- 🔽 新增漢堡選單 -->
+    <label id="menu-toggle" class="menu-toggle" for="check">
+      <input type="checkbox" id="check"/> 
+      <span></span>
+      <span></span>
+      <span></span>
+    </label>
+
+    <div id="header-info2">
+      <a href="http://127.0.0.1:5000/analysis"  class="analysis-btn shape-ex2 m-3 Rajdhan text-shadow">
+        analysis
+        <div class="shape-line"></div>
+      </a>
+      <a href="http://127.0.0.1:5000/pay" id="premium" class="shape-ex2 m-3 Rajdhani text-shadow">
+        premium
+        <div class="shape-line"></div>
+      </a>
+      <a href="http://127.0.0.1:5000/log_in" id="user" class="user d-flex align-items-center text-shadow">
+        <div class="user-account shape-ex2 m-3 Rajdhani user-account">
+            login
+            <div class="shape-line" ></div>
+        </div>
+        <img id="user-img" src="https://cdn-icons-png.flaticon.com/512/1144/1144760.png" alt="" class="user-img">
+      </a>
+    </div>
+  </header>
+    <div class="bc4">
+        <div class="upload bc54 d-flex align-items-center justify-content-center flex-column">
+            <div class="upload-container">
+                <div class="drop-area d-flex flex-column" id="drop-area">
+                    <label for="file-input" class="prettier-input">
+                        <p id="file-name">Drop music files here, or click to select</p>
+                        <input type="file" id="file-input" accept=".wav" hidden>
+                    </label>
+                </div>
+                <div class="upload-options d-flex align-items-center justify-content-center flex-column">
+                    <p>Paste YouTube Link</p>
+                    <input type="text" placeholder="Please enter a YouTube URL">
+                </div>
+            </div>
+            <button class="upload-btn animate__animated">Upload</button>
+            <a href="http://127.0.0.1:5000/pay">
+                <p class="sc-btn">premium</p>
+            </a>
+        </div>
+    </div>
+    <footer class="footer bc32 d-flex justify-content-between color1">
+        <div class="d-flex flex-column justify-content-center text-start align-items ">
+            <div class="footer-text w-auto">email：whalesignal@gmail.com</div>
+            <div class="footer-text w-auto">producer：Eric Wang, Ben Chan, Andrew Chang, Alice Lu, Joseph Fang, Jin Chang</div>
+        </div>
+        <div class="d-flex align-items-center justify-content-center d-flex">
+            <a href="" class="footer-btn  animate__animated m-3">
+                <img src="https://cdn-icons-png.flaticon.com/512/15047/15047435.png" alt="fb-icon" class="fb w50 h50">
+            </a>
+            <a href="" class="footer-btn animate__animated m-3">
+                <img src="https://cdn-icons-png.flaticon.com/512/15707/15707749.png " alt="ig-icon" class="ig w50 h50">
+            </a>
+            <a href=".footer-btn" class="footer-btn animate__animated m-3">
+                <img src="https://cdn-icons-png.flaticon.com/512/5969/5969020.png " alt="x-icon" class="x ig w50 h50">
+            </a>
+        </div>
+    </footer>
+    <div class="loadcontainer">
+        <div class="music-block">
+          <div class="music">
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+          </div>
+          <div class="loading loading04">
+            <span>L</span>
+            <span>O</span>
+            <span>A</span>
+            <span>D</span>
+            <span>I</span>
+            <span>N</span>
+            <span>G</span>
+            <span>.</span>
+            <span>.</span>
+            <span>.</span>
+          </div>
+        </div>
+        <div class="waveWrapper waveAnimation">
+          <div class="waveWrapperInner bgTop">
+            <div class="wave waveTop" style="background-image: url('http://front-end-noobs.com/jecko/img/wave-top.png')"></div>
+          </div>
+          <div class="waveWrapperInner bgMiddle">
+            <div class="wave waveMiddle" style="background-image: url('http://front-end-noobs.com/jecko/img/wave-mid.png')"></div>
+          </div>
+          <div class="waveWrapperInner bgBottom">
+            <div class="wave waveBottom" style="background-image: url('http://front-end-noobs.com/jecko/img/wave-bot.png')"></div>
+          </div>
+          <div class="bgw">
+            <div class="water"></div>
+          </div>
+          <svg>
+            <filter id="turbulence" x="0" y="0" width="100%" height="100%">
+                <feTurbulence id="sea-filter" numOctaves="3" seed="2" baseFrequency="0.02 0.05"></feTurbulence>
+                <feDisplacementMap scale="20" in="SourceGraphic"></feDisplacementMap>
+                <animate xlink:href="#sea-filter" 
+                        attributeName="baseFrequency" 
+                        dur="60s" 
+                        keyTimes="0;0.5;1" 
+                        values="0.02;0.04;0.02" 
+                        repeatCount="indefinite"
+                        begin="15s"/>
+            </filter>
+          </svg> 
+          
+          </div>
+          
+          
+        </div>
+    <!-- load -->
+    <!-- <script>
+        document.querySelector(".upload-btn").addEventListener("click", function () {
+            
+        document.querySelector(".loadcontainer").classList.add("active");
+          
+            
+        });
+    </script> -->
+    <script>
+        document.getElementById("check").addEventListener("change", function () {
+        document.getElementById("header-info").classList.toggle("active");
+        });
+    </script>
+      <!-- 點擊滑動 -->
+    <script>
+        document.querySelector('.arrow-down-block').addEventListener('click', function() {
+        document.querySelector('.upload').scrollIntoView({ behavior: 'smooth' });
+        });
+        let lastScrollY = window.scrollY; // 記錄最後滾動位置
+
+window.addEventListener('scroll', function() {
+    const banner = document.querySelector('.banner');
+    const upload = document.querySelector('.upload');
+    const bannerRect = banner.getBoundingClientRect();  // .banner 區域的位置
+    const viewportHeight = window.innerHeight;  // 視窗高度
+
+    // 判斷滾動方向
+    const isScrollingDown = window.scrollY > lastScrollY;  // 當前滾動位置大於最後滾動位置表示向下滾動
+    lastScrollY = window.scrollY; // 更新最後滾動位置
+
+    // 當滾動到 .banner 區域並且是向下滾動時，滾動到 .upload 區域
+    if (isScrollingDown && bannerRect.top <= viewportHeight * 0.5 && bannerRect.bottom >= 0) {
+        upload.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    // 當滾動回 .banner 區域並且是向上滾動時，滾動回 .banner
+    // if (!isScrollingDown && bannerRect.top <= viewportHeight * ) {
+    //     banner.scrollIntoView({ behavior: 'smooth' });
+    // }
+});
+
+    </script>
+    <script>
+    
+        window.addEventListener('scroll', function() {
+            const header = document.getElementById('header');
+            const scrollPosition = window.scrollY;  // 獲取滾動位置
+            const viewportHeight = window.innerHeight;  // 獲取視窗高度
+    
+            console.log(scrollPosition, viewportHeight);  // 檢查滾動位置與視窗高度
+    
+            // 滾動超過視窗高度時顯示 header
+            if (scrollPosition > viewportHeight*0.8) {
+                header.classList.add('show-header');
+            } else {
+                header.classList.remove('show-header');
+            }
+        });
+        document.addEventListener('scroll', function() {
+            const arrowDownBlock = document.querySelector('.arrow-down-block');
+            arrowDownBlock.classList.add('move');
+            const viewportHeight = window.innerHeight;  // 獲取視窗高度
+            // 當滾動超過 100px 時，分開控制移動與透明度
+            if (window.scrollY > viewportHeight*0.5) {
+                
+                arrowDownBlock.classList.add('fade');  // 開始變透明
+            } else { 
+                arrowDownBlock.classList.remove('fade');  // 變回不透明
+            }
+        });
+    </script>
+    <script src="{{url_for('static', filename='javascript/homepage.js')}}"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const fileInput = document.getElementById('file-input');
+            const fileNameDisplay = document.getElementById('file-name');
+            const dropArea = document.getElementById('drop-area');
+    
+            // 處理檔案選擇
+            fileInput.addEventListener('change', function() {
+                const file = fileInput.files[0];
+                if (file) {
+                    fileNameDisplay.textContent = file.name;
+                }
+            });
+    
+            // 監聽拖放區域的事件
+            dropArea.addEventListener('dragover', function(event) {
+                event.preventDefault();  // 防止默認行為（防止打開檔案）
+                dropArea.classList.add('dragover');  // 當拖曳進來時改變背景顏色
+            });
+    
+            dropArea.addEventListener('dragleave', function() {
+                dropArea.classList.remove('dragover');  // 拖曳離開時移除背景顏色
+            });
+    
+            dropArea.addEventListener('drop', function(event) {
+                event.preventDefault();  // 防止默認行為（防止打開檔案）
+    
+                // 確認拖曳進來的是 .wav 檔案
+                const files = event.dataTransfer.files;
+                if (files.length > 0) {
+                    const file = files[0];
+                    if (file.type === "audio/wav") {
+                        fileNameDisplay.textContent = file.name;  // 顯示檔案名稱
+                    } else {
+                        fileNameDisplay.textContent = "Only .wav files are allowed";  // 只允許 .wav 檔案
+                    }
+                }
+            });
+        });
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="{{ url_for('static', filename='javascript/jquery.ripples.js') }}"></script>
+    <script src="{{url_for('static', filename='javascript/entrance-animation.js')}}"></script>
+    <script>
+      $(document).ready(function() {
+        $("#video-container").ripples({
+          resolution: 256,
+          dropRadius: 20,
+          perturbance: 0.03
+        });
+      });
+    </script>
+</body>
+
+</html>

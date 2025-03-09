@@ -1,0 +1,32 @@
+/* BD.css */
+
+/* 基本頁面樣式 */
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #f0f0f0;
+  }
+  
+  /* 圖表容器樣式 */
+  .chart-container {
+    margin: 2rem auto;
+    border: 1px solid #ddd;
+    padding: 30px;
+    box-sizing: border-box;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+  }
+  
+  /* 長條圖容器 */
+  #barChartContainer {
+    width: 600px;
+    height: 400px;
+  }
+  
+  /* Doughnut 圖容器 */
+  #doughnutChartContainer {
+    width: 600px;
+    height: 600px;
+  }
+  

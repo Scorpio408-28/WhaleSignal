@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WhaleSignal - Pay</title>
+    <link rel="icon" type="image/png" href="{{url_for('static', filename='image/WhaleSignal_Logo-r(1).png')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='css/pay.css')}}">
+</head>
+<body>
+    <div><button class="button_top" id="close-payment" onclick="window.location.href='/'">✖</button></div>
+    <div class="pricing-container">
+        <div class="card free">
+            <h2><img src="./static/image/free2.png">Free</h2>
+            <div class="price">NT$0<span class="price_small">/month</span></div>
+            <button class="button" id="free-btn" onclick="window.location.href='/'">Start Now</button>
+            <table class="features-table">
+                <tr>
+                    <td class="checkmark">✓</td>
+                    <td>Upload limit: 1 WAV file per day</td>
+                </tr>
+                <tr>
+                    <td class="checkmark">✓</td>
+                    <td>Upload limit: 1 YouTube link per day</td>
+                </tr>
+                <tr>
+                    <td class="checkmark">✓</td>
+                    <td>YouTube analysis report</td>
+                </tr>  
+            </table>
+            <!--<ul class="features">
+                <li>Upload limit: 1 WAV file per day</li>
+                <li>Upload limit: 1 YouTube link per day</li>
+                <li>YouTube analysis report</li>
+            </ul>-->
+        </div>
+
+        <div class="card paid">
+            <h2> <img class="img" src="./static/image/best.png"> Pay </h2>                   
+            <div class="price">NT$399<span class="price_small">/month</span></div>
+            <button class="button" id="pay-button">Get Now</button>
+            <table class="features-table">
+                <tr>
+                    <td class="checkmark">✓</td>
+                    <td>Unlimited uploads of WAV files & YouTube links</td>
+                </tr>
+                <tr>
+                    <td class="checkmark">✓</td>
+                    <td>History records</td>
+                </tr>
+                <tr>
+                    <td class="checkmark">✓</td>
+                    <td>YouTube analysis report (includes all free features)</td>
+                </tr>
+                <tr>
+                    <td class="checkmark">✓</td>
+                    <td>Recommended posting time and location suggestions</td>
+                </tr>
+                <tr>
+                    <td class="checkmark">✓</td>
+                    <td>Apple Music & Spotify analysis report</td>
+                </tr>
+                <tr>
+                    <td class="checkmark">✓</td>
+                    <td>Early access to new features</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <div class="payment-modal" id="payment-modal">
+        <div class="payment-container">
+            <div class="payment-header">
+                <button class="back-button" onclick="window.location.href='/pay'">← Back</button>
+                <h2>Upgrade to Pay Plan</h2>
+            </div>
+
+            <p class="pay-text">NT$399 per month</p>
+            <div class="pay-centant">
+                <p>Auto-renewal every month</p>
+                <p>Total due today: NT$399</p>
+                <div class="pay-divider"></div>
+                <p>Payment method: Credit Card</p>
+            </div>
+
+            <div class="input-title">Cardholder Name</div>
+            <input type="text" class="input-field" placeholder="Enter cardholder name">
+
+            <div class="input-title">Credit Card Information</div>
+            <input type="text" class="input-field" placeholder="Credit card number">
+            <div class="input-row">
+                <input type="text" class="input-field" placeholder="Expiration date (MM/YY)">
+                <input type="text" class="input-field" placeholder="CVC">
+            </div>
+
+            <div class="input-title">Billing Information</div>
+            <input type="email" class="input-field" placeholder="Email">
+            <input type="text" class="input-field" placeholder="Country">
+            <input type="text" class="input-field" placeholder="Postal code">
+            <input type="text" class="input-field" placeholder="Billing address">
+
+            <button class="pay-button" onclick="window.location.href='/'">Confirm Payment</button>
+        </div>
+    </div>
+    <script>
+  document.addEventListener("DOMContentLoaded", function () {
+    // Get pay button & payment modal
+    const payButton = document.getElementById("pay-button");
+    const paymentModal = document.getElementById("payment-modal");
+
+    if (payButton) {
+        payButton.addEventListener("click", function () {
+            const username = localStorage.getItem("username"); // ✅ Check login status
+            console.log("🔍 Pay button clicked, checking login status:", username);
+
+            if (!username) {
+                alert("Please log in before making a payment!");
+                window.location.href = "/log_in"; // ❌ Not logged in → Redirect to login
+                return;
+            }
+            // ✅ User is logged in, show payment modal
+            paymentModal.style.display = "flex";
+        });
+    }
+
+    // Payment modal close button
+    const closePaymentButton = document.getElementById("close-payment");
+    if (closePaymentButton) {
+        closePaymentButton.addEventListener("click", function () {
+            console.log("❌ Closing payment modal");
+            paymentModal.style.display = "none";
+        });
+    }
+
+    // 🔥 **Free plan button check** (Redirect to login if not logged in)
+    const freeButton = document.getElementById("free-btn");
+    if (freeButton) {
+        freeButton.addEventListener("click", function (event) {
+            event.preventDefault(); // ❌ Prevent default button behavior
+            const username = localStorage.getItem("username"); // ✅ Check login status
+            console.log("🔍 Free button clicked, checking login status:", username);
+
+            if (!username) {
+                alert("Please log in before using the free plan!");
+                window.location.href = "/log_in"; // ❌ Not logged in → Redirect to login
+            } else {
+                alert("✅ You are logged in. Free plan activated!");
+                window.location.href = "/"; // ✅ Logged in → Redirect to homepage (or free features page)
+            }
+        });
+    }
+});
+    </script>
+</body>
+</html>

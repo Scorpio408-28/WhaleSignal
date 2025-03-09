@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- CSS only -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Michroma&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <title>Document</title>
+    <link href = "{{url_for('static', filename='css/main.css')}}" rel="stylesheet">
+    <link rel="icon" type="image/png" href="https://cdn.discordapp.com/attachments/1339462668297175071/1339464970282467419/WhaleSignal_Logo-r.png?ex=67aed176&is=67ad7ff6&hm=db7cc719f8e27f2145545c4ee65c1e296b4780ce5e3bfbb53d3c28e095521ed4&">
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const fileInput = document.getElementById('file-input');
+            const fileNameDisplay = document.getElementById('file-name');
+            const uploadButton = document.querySelector('.upload-btn');
+            const youtubeInput = document.querySelector('.upload-options input');
+    
+            uploadButton.addEventListener('click', function () {
+                const file = fileInput.files[0];
+                const youtubeURL = youtubeInput.value.trim();
+    
+                if (file) {
+                    uploadFile(file);
+                } else if (youtubeURL) {
+                    uploadYoutubeURL(youtubeURL);
+                } else {
+                    alert("Please select a file or enter a YouTube URL.");
+                }
+            });
+    
+            function uploadFile(file) {
+                const formData = new FormData();
+                formData.append("file", file);
+    
+                fetch("http://127.0.0.1:5000/upload", {
+                    method: "POST",
+                    body: formData,
+                })
+                .then(response => response.json())
+                .then(data => {
+                    alert(data.message || "Upload successful!");
+                })
+                .catch(error => {
+                    console.error("Error:", error);
+                });
+            }
+    
+            function uploadYoutubeURL(youtubeURL) {
+                fetch("http://127.0.0.1:5000/upload_url", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ youtube_url: youtubeURL })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    alert(data.message || "URL processed successfully!");
+                })
+                .catch(error => {
+                    console.error("Error:", error);
+                });
+            }
+        });
+    </script>
+    
+</head>
+<body>
+    <header class="bc23 flex-dir-row justify-content-between header">
+        <div class="d-flex align-items-center flex-dir-row header-logo">
+            <a href="" class="logo d-flex flex-dir-row align-items-center">
+                <img src="https://cdn.discordapp.com/attachments/1339462668297175071/1339518870028947548/image_19.png?ex=67af03a9&is=67adb229&hm=945ba2cdb19a9f3cc8bd91ff919c907167f02ac3ca9dd9004a4dfff9e4e35a94&" alt="" class="logo-img ">
+                <div class="logo-text m-2 Michroma color1">WhaleSignal</div>
+            </a>
+        </div>
+        <div class="d-flex align-items-center flex-dir-row header-info">
+            <a href="" class="analysis m-3 Rajdhani color1">analysis</a>
+            <a href="" class="pay m-3 Rajdhani color1">premium</a>
+            <a href="http://127.0.0.1:5000/log_in" class="user d-flex flex-dir-row align-items-center">
+                <div class="user-account m-3 Rajdhani color1">
+                    username
+                </div>
+                <img src="https://cdn-icons-png.flaticon.com/512/1144/1144760.png " alt="" class="user-img h50 w50">
+            </a>
+        </div>
+    </header>
+    <div class="bc4">
+        <div class="banner">
+            <div class="banner-block">
+                123
+            </div>
+        </div>
+        <div class="upload bc3 flexbox_center flex-dir-column">
+            <div class="upload-container">
+                <div class="drop-area d-flex flex-dir-column" id="drop-area">
+                    <label for="file-input" class="prettier-input">
+                        <p id="file-name">Drop music files here, or click to select</p>
+                        <input type="file" id="file-input" accept=".wav" hidden>
+                    </label>
+                </div>
+                <div class="upload-options flexbox_center flex-dir-column">
+                    <p>Paste YouTube Link</p>
+                    <input type="text" placeholder="Please enter a YouTube URL">
+                </div>
+            </div>
+            <button class="upload-btn">Upload</button>
+        </div>
+    </div>
+    <footer class="footer bc32 flex-dir-row justify-content-between">
+        <div class="flex-dir-column justify-content-center padr75 text-start align-items: flex-start m100">
+            <div class="footer-text text-start w-auto color1">email:whalesignal@gmail.com</div>
+            <div class="footer-text text-start w-auto color1">
+                producer:Eric Wang, Ben Chan, Andrew Chang, Alice Lu, Joseph Fang, Gin Chang  
+            </div>
+        </div>
+        <div class="flexbox_center flex-dir-row padl75">
+            <a href="https://www.facebook.com/profile.php?id=100079145646862" class="s-btn m-3">
+                <img src="https://cdn-icons-png.flaticon.com/512/15047/15047435.png" alt="fb-icon" class="fb w50 h50">
+            </a>
+            <a href="https://www.instagram.com/duoduos_studio/" class="s-btn m-3">
+                <img src="https://cdn-icons-png.flaticon.com/512/15707/15707749.png " alt="ig-icon" class="ig w50 h50">
+            </a>
+            <a href="https://www.youtube.com/@%E7%9A%93%E7%9A%93%E8%80%81%E5%B8%AB" class="s-btn m-3">
+                <img src="https://cdn-icons-png.flaticon.com/512/5969/5969020.png " alt="x-icon" class="x ig w50 h50">
+            </a>
+        </div>
+    </footer>
+</body>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const fileInput = document.getElementById('file-input');
+        const fileNameDisplay = document.getElementById('file-name');
+        const dropArea = document.getElementById('drop-area');
+
+        // 處理檔案選擇
+        fileInput.addEventListener('change', function() {
+            const file = fileInput.files[0];
+            if (file) {
+                fileNameDisplay.textContent = file.name;
+            }
+        });
+
+        // 監聽拖放區域的事件
+        dropArea.addEventListener('dragover', function(event) {
+            event.preventDefault();  // 防止默認行為（防止打開檔案）
+            dropArea.classList.add('dragover');  // 當拖曳進來時改變背景顏色
+        });
+
+        dropArea.addEventListener('dragleave', function() {
+            dropArea.classList.remove('dragover');  // 拖曳離開時移除背景顏色
+        });
+
+        dropArea.addEventListener('drop', function(event) {
+            event.preventDefault();  // 防止默認行為（防止打開檔案）
+
+            // 確認拖曳進來的是 .wav 檔案
+            const files = event.dataTransfer.files;
+            if (files.length > 0) {
+                const file = files[0];
+                if (file.type === "audio/wav") {
+                    fileNameDisplay.textContent = file.name;  // 顯示檔案名稱
+                } else {
+                    fileNameDisplay.textContent = "Only .wav files are allowed";  // 只允許 .wav 檔案
+                }
+            }
+        });
+    });
+</script>
+</html>

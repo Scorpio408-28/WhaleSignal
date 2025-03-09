@@ -1,0 +1,252 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    background-color: rgb(243, 244, 246);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+}
+
+.container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 1rem;
+}
+
+.login-card {
+    background-color: white;
+    border-radius: 1rem;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+    display: flex;
+    overflow: hidden;
+    position: relative;
+    height: 500px;
+}
+
+/* Left Panel */
+.intro-panel {
+    width: 900px;
+    position: relative;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.video-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+.video-background video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: blur(4px);
+}
+
+
+.intro-content {
+    position: relative;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 3rem;
+    z-index: 1;
+}
+
+.intro-panel h1 {
+    font-size: 2.5rem;
+    font-weight: 200;
+    margin-bottom: 1.5rem;
+    letter-spacing: 0.5px;
+}
+
+.intro-panel p {
+    font-size: 1.125rem;
+    line-height: 1.6;
+    opacity: 0.9;
+    font-weight: 300;
+}
+
+/* Right Panel */
+.form-panel {
+    width: 40%;
+    padding: 2.5rem;
+    background: white;
+}
+
+.tabs {
+    display: flex;
+    gap: 2rem;
+    margin-bottom: 2.5rem;
+    position: relative;
+}
+
+.tabs::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background-color: #e5e7eb;
+}
+
+.tab-btn {
+    font-size: 1.125rem;
+    background: none;
+    border: none;
+    color: #9ca3af;
+    cursor: pointer;
+    padding: 0.5rem 0;
+    position: relative;
+    transition: color 0.2s;
+}
+
+.tab-btn.active {
+    color: #3b82f6;
+    font-weight: 500;
+}
+
+.tab-btn.active::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: #3b82f6;
+    z-index: 1;
+}
+
+.login-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+.input-group {
+    position: relative;
+    margin-bottom: 5px;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 0.875rem 1rem;
+    border: 1px solid #e5e7eb;
+    border-radius: 0.5rem;
+    font-size: 1rem;
+    transition: all 0.2s;
+    background: white;
+}
+
+.input-group input::placeholder {
+    color: #caced6;
+}
+
+.input-group input:focus {
+    outline: none;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.input-group.error input {
+    border-color: #ef4444;
+}
+
+.error-message {
+    display: none;
+    position: absolute;
+    left: 0;
+    bottom: -20px;
+    font-size: 0.75rem;
+    color: #ef4444;
+}
+
+.input-group.error .error-message {
+    display: block;
+}
+
+.check-icon {
+    position: absolute;
+    right: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #22c55e;
+    opacity: 0;
+    transition: opacity 0.2s;
+}
+
+.input-group.valid .check-icon {
+    opacity: 1;
+}
+
+.input-group.valid input {
+    border-color: #22c55e;
+}
+
+.submit-btn {
+    background-color: #3b82f6;
+    color: white;
+    padding: 0.875rem;
+    border: none;
+    border-radius: 0.5rem;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    margin-top: 0.5rem;
+}
+
+.submit-btn:hover {
+    background-color: #2563eb;
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding: 0.5rem;
+    }
+
+    .login-card {
+        flex-direction: column;
+        max-width: 400px;
+        margin: 0 auto;
+        height: auto;
+    }
+
+    .intro-panel,
+    .form-panel {
+        width: 100%;
+    }
+
+    .intro-panel {
+        min-height: 300px;
+    }
+
+    .intro-content {
+        padding: 2rem;
+        text-align: center;
+    }
+
+    .intro-panel h1 {
+        font-size: 2rem;
+    }
+
+    .form-panel {
+        padding: 2rem;
+    }
+}
