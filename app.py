@@ -951,5 +951,6 @@ def create_account():
         return jsonify({"message": "伺服器錯誤，請稍後再試！", "status": "error"}), 500
 
 if __name__ == '__main__':
-    from waitress import serve  # Render 建議使用 waitress 來提升穩定性
-    serve(app, host='0.0.0.0', port=8080)
+    from waitress import serve
+    port = int(os.environ.get('PORT', 8080))  # Render 需要使用 PORT 變數
+    serve(app, host='0.0.0.0', port=port)
