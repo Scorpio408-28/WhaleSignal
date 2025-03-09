@@ -100,7 +100,6 @@ PyQt5_sip==12.17.0
 pytest==8.3.4
 python-dotenv==1.0.1
 pytube==15.0.0
-pywin32==307
 requests==2.31.0
 requests-oauthlib==2.0.0
 rich==13.9.4
