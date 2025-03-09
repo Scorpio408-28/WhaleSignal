@@ -212,6 +212,7 @@ typing_extensions @ file:///home/conda/feedstock_root/build_artifacts/typing_ext
 tzdata==2024.2
 uritemplate==4.1.1
 urllib3 @ file:///C:/b/abs_9a_f8h_bn2/croot/urllib3_1727769836930/work
+waitress==3.0.2
 wcwidth @ file:///home/conda/feedstock_root/build_artifacts/wcwidth_1733231326287/work
 webencodings==0.5.1
 websocket-client @ file:///C:/b/abs_5dmnxxoci9/croot/websocket-client_1715878351319/work
