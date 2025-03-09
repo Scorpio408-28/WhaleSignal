@@ -172,7 +172,7 @@
     <a href="http://127.0.0.1:5000/analysis"  class="analysis-btn shape-ex2 m-3 Rajdhani text-shadow">analysis
       <div class="shape-line"></div>
     </a>
-    <a href="http://127.0.0.1:5000/pay" id="premium" class="shape-ex2 m-3 Rajdhani text-shadow">premium
+    <a href="{{ url_for('pay') }}" id="premium" class="shape-ex2 m-3 Rajdhani text-shadow">premium
       <div class="shape-line"></div>
     </a>
     <a href="http://127.0.0.1:5000/log_in" id="user" class="user d-flex align-items-center text-shadow">
@@ -206,7 +206,7 @@
         analysis
         <div class="shape-line"></div>
       </a>
-      <a href="http://127.0.0.1:5000/pay" id="premium" class="shape-ex2 m-3 Rajdhani text-shadow">
+      <a href="{{ url_for('pay') }}" id="premium" class="shape-ex2 m-3 Rajdhani text-shadow">
         premium
         <div class="shape-line"></div>
       </a>
@@ -234,7 +234,7 @@
                 </div>
             </div>
             <button class="upload-btn animate__animated">Upload</button>
-            <a href="http://127.0.0.1:5000/pay">
+            <a href="{{ url_for('pay') }}">
                 <p class="sc-btn">premium</p>
             </a>
         </div>
