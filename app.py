@@ -856,7 +856,7 @@ def pay():
     return render_template('pay.html', username=username)
 @app.route('/go_to_pay')
 def go_to_pay():
-    return redirect(url_for('pay', _external=True))
+    return redirect(url_for('pay'))
 @app.route("/success", methods=["GET", "POST"])
 def success():
     return render_template("success.html")
