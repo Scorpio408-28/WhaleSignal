@@ -38,7 +38,7 @@ document.addEventListener('DOMContentLoaded', function () {
         // ✅ 使用者未登入時，按鈕變回 Login 並指向登入頁
         loginButtons.forEach(button => {
             button.textContent = "Login";
-            button.href = "http://127.0.0.1:5000/log_in";
+            button.href = "/log_in";
             button.removeEventListener("click", handleLogoutClick); // **先移除登出事件**
             button.addEventListener("click", handleLoginClick); // **綁定登入**
         });
@@ -54,7 +54,7 @@ document.addEventListener('DOMContentLoaded', function () {
             // **登出後恢復成 Login 狀態**
             loginButtons.forEach(button => {
                 button.textContent = "Login";
-                button.href = "http://127.0.0.1:5000/log_in";
+                button.href = "https://whalesignal.onrender.com/log_in";
                 button.removeEventListener("click", handleLogoutClick); // **移除登出監聽**
                 button.addEventListener("click", handleLoginClick); // **恢復登入監聽**
             });
@@ -64,7 +64,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // ✅ 登入功能（點擊時前往登入頁面）
     function handleLoginClick(event) {
         // 這裡不需要 `preventDefault()`，因為我們希望它能夠跳轉
-        window.location.href = "http://127.0.0.1:5000/log_in";
+        window.location.href = "/log_in";
     }
     
 
@@ -160,7 +160,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     if (!data.has_records) {
                         alert("Please upload file first!");
                     } else {
-                        window.location.href = "http://127.0.0.1:5000/analysis";
+                        window.location.href = "/analysis";
                     }
                 })
                 .catch(error => {

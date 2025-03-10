@@ -951,7 +951,7 @@ def create_account():
 # ========================================================================================================================
 @app.route('/go_to_pay')
 def go_to_pay():
-    return redirect(url_for('pay'))
+    return redirect(url_for('pay',_external=True))
 @app.route('/go_to_log_in')
 def go_to_log_in():
     return redirect(url_for('log_in'))
