@@ -64,7 +64,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // ✅ 登入功能（點擊時前往登入頁面）
     function handleLoginClick(event) {
         // 這裡不需要 `preventDefault()`，因為我們希望它能夠跳轉
-        window.location.href = "/log_in";
+        window.location.href = window.location.origin + "/log_in";
     }
     
 
@@ -160,7 +160,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     if (!data.has_records) {
                         alert("Please upload file first!");
                     } else {
-                        window.location.href = "/analysis";
+                        window.location.href = window.location.origin + "/analysis";
                     }
                 })
                 .catch(error => {
