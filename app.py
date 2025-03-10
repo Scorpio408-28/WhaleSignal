@@ -852,11 +852,7 @@ def log_in():
     return render_template("loginpage.html")
 @app.route('/pay', methods=["GET", "POST"])
 def pay():
-    username = session.get('username')  # 取得 Session 中的 username
-    return render_template('pay.html', username=username)
-@app.route('/go_to_pay')
-def go_to_pay():
-    return redirect(url_for('pay'))
+    username = session.get('username')  # 取得 Session 中的 username    return render_template('pay.html', username=username)
 @app.route("/success", methods=["GET", "POST"])
 def success():
     return render_template("success.html")
@@ -950,6 +946,29 @@ def create_account():
     except Exception as e:
         print(f"❌ 伺服器錯誤: {str(e)}")
         return jsonify({"message": "伺服器錯誤，請稍後再試！", "status": "error"}), 500
+
+
+# ========================================================================================================================
+@app.route('/go_to_pay')
+def go_to_pay():
+    return redirect(url_for('pay'))
+@app.route('/go_to_log_in')
+def go_to_log_in():
+    return redirect(url_for('log_in'))
+@app.route('/go_to_analysis')
+def go_to_analysis():
+    return redirect(url_for('analysis'))
+@app.route('/go_to_home')
+def go_to_home():
+    return redirect(url_for('/'))
+@app.route('/go_to_upload')
+def go_to_upload():
+    return redirect(url_for('/upload'))
+@app.route('/go_to_upload_url')
+def go_to_url():
+    return redirect(url_for('/upload_url'))
+
+
 
 if __name__ == '__main__':
     from waitress import serve
