@@ -58,7 +58,7 @@
             const formData = new FormData();
             formData.append("file", file);
 
-            fetch("http://127.0.0.1:5000/upload", {
+            fetch("{{ url_for('upload') }}", {
                 method: "POST",
                 body: formData,
             })
@@ -75,7 +75,7 @@
         }
 
         function uploadYoutubeURL(youtubeURL) {
-            fetch("http://127.0.0.1:5000/upload_url", {
+            fetch("{{ url_for('upload_url') }}", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -169,13 +169,13 @@
           
 
   <div id="header-info" class="header-info d-flex align-items-center">
-    <a href="http://127.0.0.1:5000/analysis"  class="analysis-btn shape-ex2 m-3 Rajdhani text-shadow">analysis
+    <a href="{{ url_for('analysis') }}"  class="analysis-btn shape-ex2 m-3 Rajdhani text-shadow">analysis
       <div class="shape-line"></div>
     </a>
     <a href="{{ url_for('pay') }}" id="premium" class="shape-ex2 m-3 Rajdhani text-shadow">premium
       <div class="shape-line"></div>
     </a>
-    <a href="http://127.0.0.1:5000/log_in" id="user" class="user d-flex align-items-center text-shadow">
+    <a href="{{ url_for('log_in') }}" id="user" class="user d-flex align-items-center text-shadow">
       <div  class="user-account shape-ex2 m-3 Rajdhani user-account">
         login
         <div class="shape-line"></div>
@@ -185,7 +185,7 @@
   </div>
     <header id="header" class="header bc23 d-flex justify-content-between color1">
     <div id="logo-block" class="header-logo d-flex align-items-center">
-      <a href="http://127.0.0.1:5000/" class="logo d-flex align-items-center">
+      <a href="{{ url_for('\') }} class="logo d-flex align-items-center">
         <!-- Flask url_for 引用 static 裡的 image_19.png -->
         <img id="logo-img" class="logo-img m-2"
           src="{{url_for('static', filename='image/WhaleSignal_Logo-r(1).png')}}"
@@ -202,7 +202,7 @@
     </label>
 
     <div id="header-info2">
-      <a href="http://127.0.0.1:5000/analysis"  class="analysis-btn shape-ex2 m-3 Rajdhan text-shadow">
+      <a href="{{ url_for('analysis') }}"  class="analysis-btn shape-ex2 m-3 Rajdhan text-shadow">
         analysis
         <div class="shape-line"></div>
       </a>
@@ -210,7 +210,7 @@
         premium
         <div class="shape-line"></div>
       </a>
-      <a href="http://127.0.0.1:5000/log_in" id="user" class="user d-flex align-items-center text-shadow">
+      <a href="{{ url_for('log_in') }}" id="user" class="user d-flex align-items-center text-shadow">
         <div class="user-account shape-ex2 m-3 Rajdhani user-account">
             login
             <div class="shape-line" ></div>
