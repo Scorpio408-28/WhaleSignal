@@ -965,7 +965,7 @@ def go_to_home():
 def go_to_upload():
     return redirect(url_for('/upload'))
 @app.route('/go_to_upload_url')
-def go_to_url():
+def go_to_upload_url():
     return redirect(url_for('/upload_url'))
 
 
