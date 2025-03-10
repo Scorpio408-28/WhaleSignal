@@ -446,9 +446,10 @@ def get_ID_user_song(username, id):
 
 # ==============================================================================================================================================================
 
-@app.route("/")
+@app.route("/",methods=["GET", "HEAD"])
 def index():
-    return render_template("homepage.html")
+    title = "首頁"
+    return render_template("homepage.html", title = title)
 
 @app.route("/upload", methods=["POST"])
 def upload_file():
